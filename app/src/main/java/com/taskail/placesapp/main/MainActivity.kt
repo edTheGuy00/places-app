@@ -4,8 +4,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.taskail.placesapp.R
 import com.taskail.placesapp.ui.TabsPagerAdapter
+import com.taskail.placesapp.ui.animation.DismissibleAnimation
+import com.taskail.placesapp.ui.animation.fabToFragmentReveal
 import com.taskail.placesapp.util.favoritesString
 import com.taskail.placesapp.util.nearbyString
+import com.taskail.placesapp.util.supportsAnimation
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_viewpage_list.*
 
 class MainActivity : AppCompatActivity(), MainContract.Presenter {
@@ -36,7 +40,14 @@ class MainActivity : AppCompatActivity(), MainContract.Presenter {
     }
 
     private fun openMapsViewFragment() {
-        val mapFragment = MapViewFragment.newInstance()
+        val mapFragment = (if (supportsAnimation())
+            MapViewFragment
+                    .newAnimatedInstance(
+                            fabToFragmentReveal(fab, container)
+                    )
+        else
+            MapViewFragment.newInstance()
+                )
                 .also {
                     mapView = it
                 }.apply {
@@ -50,6 +61,20 @@ class MainActivity : AppCompatActivity(), MainContract.Presenter {
     }
 
     override fun closeMapView() {
+
+        if (supportsAnimation()) {
+
+            (mapView as DismissibleAnimation)
+                    .dismiss {
+                        removeMap()
+                    }
+        } else {
+            removeMap()
+        }
+
+    }
+
+    private fun removeMap() {
         supportFragmentManager
                 .beginTransaction()
                 .remove(mapView as MapViewFragment)
@@ -57,7 +82,8 @@ class MainActivity : AppCompatActivity(), MainContract.Presenter {
     }
 
     override fun onBackPressed() {
-        if (mapView.onBackPressed()) {
+        if (mapView.isOpened) {
+            closeMapView()
             return
         }
         super.onBackPressed()

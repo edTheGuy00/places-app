@@ -8,26 +8,53 @@ import android.view.ViewGroup
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.taskail.placesapp.BackPressedHandler
 import com.taskail.placesapp.R
+import com.taskail.placesapp.ui.animation.*
+import com.taskail.placesapp.util.supportsAnimation
 
 /**
  *Created by ed on 4/12/18.
  */
 
-class MapViewFragment : Fragment(), OnMapReadyCallback, MainContract.MapView {
+class MapViewFragment : Fragment(),
+        OnMapReadyCallback,
+        MainContract.MapView,
+        DismissibleAnimation
+{
 
     override lateinit var presenter: MainContract.Presenter
 
+    override var isOpened: Boolean = false
+
     companion object {
+
+        const val ARG_REVEAL = "args_reveal"
 
         fun newInstance() : MapViewFragment {
             return MapViewFragment()
         }
+
+        fun newAnimatedInstance(revealAnimationSettings: RevealAnimationSettings) :
+                MapViewFragment {
+            val bundle = Bundle()
+            bundle.putParcelable(ARG_REVEAL, revealAnimationSettings)
+            val fragment = MapViewFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_map_view, container, false)
+        val view = inflater.inflate(R.layout.fragment_map_view, container, false)
+
+        if (supportsAnimation()) {
+            val revealAnim: RevealAnimationSettings = arguments?.getParcelable(ARG_REVEAL)!!
+            reveal(view, revealAnim)
+        }
+
+        isOpened = true
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,8 +71,14 @@ class MapViewFragment : Fragment(), OnMapReadyCallback, MainContract.MapView {
 
     }
 
-    override fun onBackPressed(): Boolean {
-        presenter.closeMapView()
-        return true
+    override fun dismiss(dismiss: () -> Unit) {
+        if (supportsAnimation()) {
+            val revealAnim: RevealAnimationSettings = arguments?.getParcelable(ARG_REVEAL)!!
+            exit(view!!, revealAnim, dismiss)
+        } else {
+            dismiss.invoke()
+        }
+
+        isOpened = false
     }
 }

@@ -10,7 +10,7 @@ interface MainContract {
 
         var presenter: Presenter
 
-        fun onBackPressed(): Boolean
+        var isOpened: Boolean
 
     }
 
