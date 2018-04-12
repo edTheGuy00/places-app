@@ -1,7 +1,8 @@
-package com.taskail.placesapp
+package com.taskail.placesapp.main
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.taskail.placesapp.R
 
 class MainActivity : AppCompatActivity() {
 
