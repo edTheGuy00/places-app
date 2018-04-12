@@ -9,7 +9,7 @@ import android.app.Application
 class PlacesApplication : Application() {
 
     companion object {
-        var INSTANCE: PlacesApplication? = null
+        lateinit var INSTANCE: PlacesApplication
     }
 
     override fun onCreate() {

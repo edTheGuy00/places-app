@@ -8,9 +8,9 @@ import com.taskail.placesapp.R
  */
 
 fun nearbyString() : String {
-    return PlacesApplication.INSTANCE!!.getString(R.string.places_nearby)
+    return PlacesApplication.INSTANCE.getString(R.string.places_nearby)
 }
 
 fun favoritesString() : String {
-    return PlacesApplication.INSTANCE!!.getString(R.string.favorite_places)
+    return PlacesApplication.INSTANCE.getString(R.string.favorite_places)
 }
