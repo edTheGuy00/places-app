@@ -39,6 +39,10 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
         }
     }
 
+    /**
+     * double check for permissions, pretty self-explanatory,
+     * this will run every time the user opens the app.
+     */
     private fun doubleCheckLocationPermission() {
 
         if (checkNeedsPermission()) {
@@ -49,12 +53,18 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
         }
     }
 
+    /**
+     * create the location provider, disposable and request for the last known location
+     */
     private fun locationGranted() {
         locationProvider = ReactiveLocationProvider(this)
         disposable = CompositeDisposable()
         getLastKnownLocation()
     }
 
+    /**
+     * check for permissions
+     */
     private fun checkNeedsPermission(): Boolean {
         return ContextCompat
                 .checkSelfPermission(this,
@@ -64,6 +74,9 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
                         android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
     }
 
+    /**
+     * request the location permission
+     */
     private fun requestLocationPermission() {
         //requestLocationPermission: for devices higher than marshmallow, ask for permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -113,6 +126,10 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
 
     }
 
+    /**
+     * get the last known location,
+     * we do not need to check for permissions since this will only be called if we already have permission
+     */
     @SuppressLint("MissingPermission")
     private fun getLastKnownLocation() {
 
@@ -126,6 +143,10 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
                 }))
     }
 
+    /**
+     * get a more accurate location for the map,
+     * we do not need to check for permissions since this will only be called if we already have permission
+     */
     @SuppressLint("MissingPermission")
     fun getAccurateLocation(location: (Location) -> Unit) {
 
@@ -154,5 +175,8 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
         }
     }
 
+    /**
+     * pass on the last known location to main activity
+     */
     abstract fun lastKnowLocation(location: Location)
 }

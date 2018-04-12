@@ -78,6 +78,11 @@ class MapViewFragment : Fragment(),
         }
     }
 
+    /**
+     * we display the users location in a small blue dot.
+     * we do not need to check for permission since we will ask the
+     * @property presenter for location permission granted
+     */
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         with(googleMap) {
@@ -91,13 +96,19 @@ class MapViewFragment : Fragment(),
         }
     }
 
-
+    /**
+     * this function will be passed to the presenter via
+     * @property presenter.requestLocation
+     */
     private fun zoomToLocation(myLocation: LatLng){
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation))
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18f))
     }
 
 
+    /**
+     * a higher-order function that will dismiss this fragment.
+     */
     override fun dismiss(dismiss: () -> Unit) {
         if (supportsAnimation()) {
             val revealAnim: RevealAnimationSettings = arguments?.getParcelable(ARG_REVEAL)!!

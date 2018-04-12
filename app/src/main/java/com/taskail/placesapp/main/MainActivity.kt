@@ -48,6 +48,9 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
+    /**
+     *
+     */
     override fun isLocationGranted(): Boolean {
         return permissionGranted
     }
