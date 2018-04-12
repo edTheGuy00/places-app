@@ -3,6 +3,7 @@ package com.taskail.placesapp.main
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.taskail.placesapp.R
+import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.TabsPagerAdapter
 import com.taskail.placesapp.ui.animation.DismissibleAnimation
 import com.taskail.placesapp.ui.animation.fabToFragmentReveal
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.layout_viewpage_list.*
  * the main entry point and the presenter for the application.
  */
 
-class MainActivity : AppCompatActivity(), MainContract.Presenter {
+class MainActivity : LocationServiceActivity(), MainContract.Presenter {
 
     private val TAG = javaClass.simpleName
 
@@ -32,6 +33,10 @@ class MainActivity : AppCompatActivity(), MainContract.Presenter {
         fab.setOnClickListener {
             openMapsViewFragment()
         }
+    }
+
+    override fun lastKnowLocation() {
+
     }
 
     /**
