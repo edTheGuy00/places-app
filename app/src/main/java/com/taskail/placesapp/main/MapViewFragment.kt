@@ -1,13 +1,16 @@
 package com.taskail.placesapp.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
 import com.taskail.placesapp.ui.animation.*
 import com.taskail.placesapp.util.supportsAnimation
@@ -23,6 +26,8 @@ class MapViewFragment : Fragment(),
 {
 
     override lateinit var presenter: MainContract.Presenter
+
+    private lateinit var googleMap: GoogleMap
 
     override var isOpened: Boolean = false
 
@@ -73,9 +78,25 @@ class MapViewFragment : Fragment(),
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-
+    @SuppressLint("MissingPermission")
+    override fun onMapReady(googleMap: GoogleMap) {
+        with(googleMap) {
+            this@MapViewFragment.googleMap = this
+            if (presenter.isLocationGranted()) {
+                isMyLocationEnabled = true
+                presenter.requestLocation {
+                    zoomToLocation(it)
+                }
+            }
+        }
     }
+
+
+    private fun zoomToLocation(myLocation: LatLng){
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18f))
+    }
+
 
     override fun dismiss(dismiss: () -> Unit) {
         if (supportsAnimation()) {

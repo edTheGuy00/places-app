@@ -1,7 +1,9 @@
 package com.taskail.placesapp.main
 
-import android.support.v7.app.AppCompatActivity
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
+import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
 import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.TabsPagerAdapter
@@ -35,8 +37,19 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
-    override fun lastKnowLocation() {
+    override fun lastKnowLocation(location: Location) {
+        Log.d(TAG, "location received")
+    }
 
+    override fun requestLocation(zoomToLocation: (LatLng) -> Unit) {
+        getAccurateLocation {
+            val myLatLng = LatLng(it.latitude, it.longitude)
+            zoomToLocation.invoke(myLatLng)
+        }
+    }
+
+    override fun isLocationGranted(): Boolean {
+        return permissionGranted
     }
 
     /**

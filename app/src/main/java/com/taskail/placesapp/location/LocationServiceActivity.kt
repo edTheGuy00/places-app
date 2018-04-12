@@ -2,12 +2,14 @@ package com.taskail.placesapp.location
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.google.android.gms.location.LocationRequest
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -112,16 +114,36 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
     }
 
     @SuppressLint("MissingPermission")
-    fun getLastKnownLocation() {
+    private fun getLastKnownLocation() {
 
         disposable.add(locationProvider.lastKnownLocation
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.d(TAG, it.latitude.toString())
+                    lastKnowLocation(it)
                 }, {
 
                 }))
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getAccurateLocation(location: (Location) -> Unit) {
+
+        val locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(1000)
+                .setNumUpdates(1)
+
+        disposable.add(locationProvider
+                .getUpdatedLocation(locationRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    location(it)
+                }, {
+                    Log.e(TAG, it.message)
+                }))
+
     }
 
     override fun onDestroy() {
@@ -132,5 +154,5 @@ abstract class LocationServiceActivity : AppCompatActivity()  {
         }
     }
 
-    abstract fun lastKnowLocation()
+    abstract fun lastKnowLocation(location: Location)
 }
