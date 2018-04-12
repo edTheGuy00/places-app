@@ -8,17 +8,22 @@ import com.taskail.placesapp.util.favoritesString
 import com.taskail.placesapp.util.nearbyString
 import kotlinx.android.synthetic.main.layout_viewpage_list.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainContract.Presenter {
 
     private val TAG = javaClass.simpleName
 
     private lateinit var pagerAdapter: TabsPagerAdapter
+    private lateinit var mapView: MainContract.MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         pagerAdapter = TabsPagerAdapter(supportFragmentManager)
         setupViewPager()
+
+        fab.setOnClickListener {
+            openMapsViewFragment()
+        }
     }
 
     private fun setupViewPager() {
@@ -28,5 +33,33 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
+    }
+
+    private fun openMapsViewFragment() {
+        val mapFragment = MapViewFragment.newInstance()
+                .also {
+                    mapView = it
+                }.apply {
+                    presenter = this@MainActivity
+                }
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, mapFragment)
+                .commit()
+    }
+
+    override fun closeMapView() {
+        supportFragmentManager
+                .beginTransaction()
+                .remove(mapView as MapViewFragment)
+                .commit()
+    }
+
+    override fun onBackPressed() {
+        if (mapView.onBackPressed()) {
+            return
+        }
+        super.onBackPressed()
     }
 }
