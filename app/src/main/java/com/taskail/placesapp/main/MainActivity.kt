@@ -12,6 +12,10 @@ import com.taskail.placesapp.util.supportsAnimation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_viewpage_list.*
 
+/**
+ * the main entry point and the presenter for the application.
+ */
+
 class MainActivity : AppCompatActivity(), MainContract.Presenter {
 
     private val TAG = javaClass.simpleName
@@ -30,6 +34,9 @@ class MainActivity : AppCompatActivity(), MainContract.Presenter {
         }
     }
 
+    /**
+     * Load the two main fragments into the viewpager
+     */
     private fun setupViewPager() {
 
         pagerAdapter.addFragment(NearbyFragment(), nearbyString())
@@ -39,6 +46,11 @@ class MainActivity : AppCompatActivity(), MainContract.Presenter {
         tabLayout.setupWithViewPager(viewPager)
     }
 
+    /**
+     * Fab button opens up the mapView.
+     * Mapview will have a circular animation for
+     * devices running Android 5.0 and above.
+     */
     private fun openMapsViewFragment() {
         val mapFragment = (if (supportsAnimation())
             MapViewFragment

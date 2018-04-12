@@ -30,10 +30,16 @@ class MapViewFragment : Fragment(),
 
         const val ARG_REVEAL = "args_reveal"
 
+        /**
+         * new instance for opening the fragment in regular mode
+         */
         fun newInstance() : MapViewFragment {
             return MapViewFragment()
         }
 
+        /**
+         * new instance for opening the fragment with a circular reveal animation
+         */
         fun newAnimatedInstance(revealAnimationSettings: RevealAnimationSettings) :
                 MapViewFragment {
             val bundle = Bundle()
