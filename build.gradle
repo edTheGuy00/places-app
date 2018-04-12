@@ -4,6 +4,7 @@ buildscript {
     ext.versions = [
             'supportLibrary': '27.1.1',
             'kotlin'        : '1.2.31',
+            'play_services' : '12.0.1',
     ]
     repositories {
         google()
