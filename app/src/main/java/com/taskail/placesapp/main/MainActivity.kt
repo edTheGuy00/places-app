@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder
 import com.taskail.placesapp.R
+import com.taskail.placesapp.data.PlacesRepository
 import com.taskail.placesapp.getRepository
 import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.TabsPagerAdapter
@@ -33,10 +34,21 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
 
     private lateinit var pagerAdapter: TabsPagerAdapter
     private var mapView: MainContract.MapView? = null
+    private var currentLocation: Location? = null
+
+    private lateinit var repository: PlacesRepository
+    private lateinit var disposable: CompositeDisposable
+    private lateinit var nearbyView: NearbyFragment
+
+    private var locationReceived = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        disposable = CompositeDisposable()
+        repository = getRepository(disposable)
+
         pagerAdapter = TabsPagerAdapter(supportFragmentManager)
         setupViewPager()
 
@@ -45,23 +57,36 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
+    override fun fetchNearbyResults() {
+        Log.d(TAG, "request results")
+        if (locationReceived) {
+            repository.getNearbyPlaces("establishment",
+                    "${currentLocation?.latitude},${currentLocation?.longitude}",
+                    1000,
+                    {
+                        Log.d(TAG, it.status)
+                        if (it.status == "OK") {
+                            nearbyView.displayResults(it.results)
+                        }
+                    })
+        } else {
+            Log.d(TAG, "no location")
+        }
+    }
+
     override fun lastKnowLocation(location: Location) {
         Log.d(TAG, "location received")
+        currentLocation = location
+        locationReceived = true
 
-        val disposable = CompositeDisposable()
+        if (nearbyView.resultHasBeenLoaded()) {
 
-        val repo = getRepository(disposable)
-
-        repo.getNearbyPlaces("establishment",
-                "${location.latitude},${location.longitude}",
-                1000,
-                {
-                    Log.d(TAG, it.results[0].name)
-                })
+        }
     }
 
     override fun requestLocation(zoomToLocation: (LatLng) -> Unit) {
         getAccurateLocation {
+            currentLocation = it
             val myLatLng = LatLng(it.latitude, it.longitude)
             zoomToLocation.invoke(myLatLng)
         }
@@ -79,7 +104,11 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
      */
     private fun setupViewPager() {
 
-        pagerAdapter.addFragment(NearbyFragment(), nearbyString())
+        pagerAdapter.addFragment(NearbyFragment().apply {
+            Log.d(TAG, "adding fragment to view pager")
+            nearbyView = this
+            presenter = this@MainActivity
+        }, nearbyString())
         pagerAdapter.addFragment(FavoritesFragment(), favoritesString())
 
         viewPager.adapter = pagerAdapter
@@ -155,5 +184,10 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
             return
         }
         super.onBackPressed()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposable.clear()
     }
 }
