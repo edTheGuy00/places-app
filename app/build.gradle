@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
+apply plugin: 'kotlin-kapt'
+
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -31,6 +33,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:${versions.play_services}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
+    implementation "android.arch.persistence.room:runtime:${versions.roomDatabase}"
+    kapt "android.arch.persistence.room:compiler:${versions.roomDatabase}"
 
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
