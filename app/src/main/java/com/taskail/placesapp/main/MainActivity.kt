@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder
@@ -132,9 +133,10 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                 .commit()
     }
 
-    override fun handleSearchFabClick() {
+    override fun handleSearchFabClick(latLngBounds: LatLngBounds) {
         SimplePlacesSearchDialogBuilder(this)
                 .setResultsFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
+                .setLatLngBounds(latLngBounds)
                 .setLocationListener(object : SimplePlacesSearchDialog.PlaceSelectedCallback {
                     override fun onPlaceSelected(place: Place) {
 

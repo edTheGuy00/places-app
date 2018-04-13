@@ -1,6 +1,7 @@
 package com.taskail.placesapp.main
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 
 /**
@@ -22,7 +23,7 @@ interface MainContract {
 
     interface Presenter {
 
-        fun handleSearchFabClick()
+        fun handleSearchFabClick(latLngBounds: LatLngBounds)
 
         fun closeMapView()
 

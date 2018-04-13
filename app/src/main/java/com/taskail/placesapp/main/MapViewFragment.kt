@@ -80,7 +80,8 @@ class MapViewFragment : Fragment(),
         }
 
         fabSearch.setOnClickListener {
-            presenter.handleSearchFabClick()
+            val latLngBounds = googleMap.projection.visibleRegion.latLngBounds
+            presenter.handleSearchFabClick(latLngBounds)
         }
     }
 
