@@ -32,7 +32,10 @@ class NearbyFragment : Fragment(), MainContract.NearbyView {
         val view = inflater.inflate(R.layout.fragment_recycler, container, false)
 
         adapter = PlacesNearbyAdapter(ArrayList(0),
-                presenter.calculateDistance())
+                presenter.calculateDistance(),
+                {
+                    presenter.openBottomSheet(it)
+                })
 
         return view
     }

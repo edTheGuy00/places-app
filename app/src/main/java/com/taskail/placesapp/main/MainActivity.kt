@@ -13,8 +13,10 @@ import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder
 import com.taskail.placesapp.R
 import com.taskail.placesapp.data.PlacesRepository
 import com.taskail.placesapp.data.models.Geometry
+import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.getRepository
 import com.taskail.placesapp.location.LocationServiceActivity
+import com.taskail.placesapp.ui.PlaceBottomSheetView
 import com.taskail.placesapp.ui.TabsPagerAdapter
 import com.taskail.placesapp.ui.animation.DismissibleAnimation
 import com.taskail.placesapp.ui.animation.fabToFragmentReveal
@@ -128,6 +130,14 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
 
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
+    }
+
+    override fun openBottomSheet(result: Result) {
+        val placeBottomSheet = PlaceBottomSheetView().apply {
+            presenter = this@MainActivity
+        }
+
+        placeBottomSheet.show(supportFragmentManager, placeBottomSheet.tag)
     }
 
     /**

@@ -12,6 +12,13 @@ import com.taskail.placesapp.data.models.Result
 
 interface MainContract {
 
+    interface BottomShetView {
+
+        var presenter: Presenter
+
+
+    }
+
     interface MapView {
 
         var presenter: Presenter
@@ -45,5 +52,7 @@ interface MainContract {
         fun fetchNearbyResults()
 
         fun calculateDistance(): (Geometry) -> String
+
+        fun openBottomSheet(result: Result)
     }
 }
