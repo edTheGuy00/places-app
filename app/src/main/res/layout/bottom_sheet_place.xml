@@ -3,15 +3,24 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_margin="10dp"
+    android:padding="15dp"
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
     <TextView
         tools:text="name"
+        android:id="@+id/placeName"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/typeOfPlace"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <LinearLayout
@@ -30,7 +39,7 @@
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/publishButton"
+            android:id="@+id/favoritesButton"
             android:layout_weight="1"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:textColor="@color/colorPrimary"

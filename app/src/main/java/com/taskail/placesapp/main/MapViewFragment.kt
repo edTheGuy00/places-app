@@ -3,6 +3,7 @@ package com.taskail.placesapp.main
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +25,16 @@ import kotlinx.android.synthetic.main.fragment_map_view.*
 class MapViewFragment : Fragment(),
         OnMapReadyCallback,
         MainContract.MapView,
-        DismissibleAnimation
-{
+        DismissibleAnimation {
+
+    private val TAG = javaClass.simpleName
 
     override lateinit var presenter: MainContract.Presenter
 
     private lateinit var googleMap: GoogleMap
+
+    var location: LatLng? = null
+    var marker: MarkerOptions? = null
 
     override var isOpened: Boolean = false
 
@@ -96,10 +101,18 @@ class MapViewFragment : Fragment(),
             this@MapViewFragment.googleMap = this
             if (presenter.isLocationGranted()) {
                 isMyLocationEnabled = true
-                presenter.requestLocation {
-                    zoomToLocation(it)
+
+                if (location != null) {
+                    zoomToLocation(location!!)
+                    addMarker(marker)
+                } else {
+                    Log.d(TAG, "location is null")
+                    presenter.requestLocation {
+                        zoomToLocation(it)
+                    }
                 }
             }
+
         }
     }
 

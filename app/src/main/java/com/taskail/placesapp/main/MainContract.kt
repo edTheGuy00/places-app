@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.taskail.placesapp.data.models.Geometry
+import com.taskail.placesapp.data.models.Location
 import com.taskail.placesapp.data.models.Result
 
 /**
@@ -15,7 +16,6 @@ interface MainContract {
     interface BottomShetView {
 
         var presenter: Presenter
-
 
     }
 
@@ -54,5 +54,9 @@ interface MainContract {
         fun calculateDistance(): (Geometry) -> String
 
         fun openBottomSheet(result: Result)
+
+        fun viewLocationOnMap(location: LatLng, name: String)
+
+        fun <T>saveToFavorites(placeToFavorite: T)
     }
 }

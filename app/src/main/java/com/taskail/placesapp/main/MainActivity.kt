@@ -135,9 +135,24 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     override fun openBottomSheet(result: Result) {
         val placeBottomSheet = PlaceBottomSheetView().apply {
             presenter = this@MainActivity
+            this.result = result
         }
 
         placeBottomSheet.show(supportFragmentManager, placeBottomSheet.tag)
+    }
+
+    override fun viewLocationOnMap(location: LatLng, name: String) {
+        Log.d(TAG, location.toString())
+        val marker = MarkerOptions().position(location).title(name)
+        openMapsViewFragment(location, marker)
+    }
+
+    override fun <T> saveToFavorites(placeToFavorite: T) {
+        when(placeToFavorite) {
+            is Result -> {
+
+            }
+        }
     }
 
     /**
@@ -145,20 +160,30 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
      * Mapview will have a circular animation for
      * devices running Android 5.0 and above.
      */
-    private fun openMapsViewFragment() {
+    private fun openMapsViewFragment(location: LatLng? = null, marker: MarkerOptions? = null) {
+
         val mapFragment = (if (isLollipopOrLater())
-            MapViewFragment
-                    .newAnimatedInstance(
-                            fabToFragmentReveal(fab, container)
-                    )
-        else
-            MapViewFragment.newInstance()
-                )
-                .also {
-                    mapView = it
-                }.apply {
-                    presenter = this@MainActivity
+            if (location != null) {
+                MapViewFragment.newAnimatedInstance(fabToFragmentReveal(fab, container)).apply {
+                    this.location = location
+                    this.marker = marker
                 }
+            } else {
+                MapViewFragment.newAnimatedInstance(fabToFragmentReveal(fab, container))
+            }
+        else
+            if (location != null) {
+                MapViewFragment.newInstance().apply {
+                    this.location = location
+                    this.marker = marker
+                }
+            } else {
+                MapViewFragment.newInstance()
+            }).also {
+            mapView = it
+        }.apply {
+            presenter = this@MainActivity
+        }
 
         supportFragmentManager
                 .beginTransaction()
