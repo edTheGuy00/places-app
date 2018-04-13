@@ -1,6 +1,8 @@
 package com.taskail.placesapp.data.network
 
 import com.taskail.placesapp.apiKey
+import com.taskail.placesapp.data.models.Response
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,5 +19,6 @@ interface PlacesAPI {
             @Query("type") type: String,
             @Query("location") location: String,
             @Query("radius") radius: Int
-    )
+
+    ) : Observable<Response>
 }
