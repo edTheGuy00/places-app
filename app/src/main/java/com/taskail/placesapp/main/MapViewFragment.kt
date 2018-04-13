@@ -81,7 +81,7 @@ class MapViewFragment : Fragment(),
     /**
      * we display the users location in a small blue dot.
      * we do not need to check for permission since we will ask the
-     * @property presenter for location permission granted
+     * @property presenter if the location permission has been granted
      */
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
