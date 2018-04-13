@@ -39,6 +39,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"
     implementation "com.google.code.gson:gson:${versions.gson}"
 
+    implementation 'com.taskail:simple-places-search-dialog:1.0'
+
     implementation 'pl.charmas.android:android-reactive-location2:2.0@aar'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'

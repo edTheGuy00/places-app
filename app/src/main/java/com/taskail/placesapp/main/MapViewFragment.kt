@@ -11,9 +11,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.taskail.placesapp.R
 import com.taskail.placesapp.ui.animation.*
 import com.taskail.placesapp.util.supportsAnimation
+import kotlinx.android.synthetic.main.fragment_map_view.*
 
 /**
  *Created by ed on 4/12/18.
@@ -76,6 +78,10 @@ class MapViewFragment : Fragment(),
                 as SupportMapFragment).apply {
             getMapAsync(this@MapViewFragment)
         }
+
+        fabSearch.setOnClickListener {
+            presenter.handleSearchFabClick()
+        }
     }
 
     /**
@@ -100,11 +106,14 @@ class MapViewFragment : Fragment(),
      * this function will be passed to the presenter via
      * @property presenter.requestLocation
      */
-    private fun zoomToLocation(myLocation: LatLng){
+    override fun zoomToLocation(myLocation: LatLng){
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation))
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18f))
     }
 
+    override fun addMarker(marker: MarkerOptions) {
+        googleMap.addMarker(marker)
+    }
 
     /**
      * a higher-order function that will dismiss this fragment.

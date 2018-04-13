@@ -3,7 +3,12 @@ package com.taskail.placesapp.main
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
+import com.google.android.gms.location.places.AutocompleteFilter
+import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog
+import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder
 import com.taskail.placesapp.R
 import com.taskail.placesapp.getRepository
 import com.taskail.placesapp.location.LocationServiceActivity
@@ -46,7 +51,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
 
         val repo = getRepository(disposable)
 
-        repo.getNearbyPlaces("restaurant",
+        repo.getNearbyPlaces("establishment",
                 "${location.latitude},${location.longitude}",
                 1000,
                 {
@@ -125,6 +130,21 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                 .beginTransaction()
                 .remove(mapView as MapViewFragment)
                 .commit()
+    }
+
+    override fun handleSearchFabClick() {
+        SimplePlacesSearchDialogBuilder(this)
+                .setResultsFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
+                .setLocationListener(object : SimplePlacesSearchDialog.PlaceSelectedCallback {
+                    override fun onPlaceSelected(place: Place) {
+
+                        val marker = MarkerOptions().position(place.latLng).title(place.name.toString())
+                        mapView.addMarker(marker)
+                        mapView.zoomToLocation(place.latLng)
+                    }
+                })
+                .build()
+                .show()
     }
 
     override fun onBackPressed() {
