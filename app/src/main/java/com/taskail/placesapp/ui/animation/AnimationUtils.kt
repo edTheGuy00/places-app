@@ -8,7 +8,7 @@ import android.animation.ArgbEvaluator
 import android.support.v4.view.animation.FastOutSlowInInterpolator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import com.taskail.placesapp.util.supportsAnimation
+import com.taskail.placesapp.util.isLollipopOrLater
 
 
 /**
@@ -23,7 +23,7 @@ fun registerCircularRevealAnimation(view: View,
                                     startColor: Int,
                                     endColor: Int){
 
-    if (supportsAnimation()) {
+    if (isLollipopOrLater()) {
         view.addOnLayoutChangeListener( object : View.OnLayoutChangeListener {
 
             override fun onLayoutChange(p0: View?,
@@ -62,7 +62,7 @@ fun startCircularExitAnimation(view: View,
                                endColor: Int,
                                dismiss: () -> Unit) {
 
-    if (supportsAnimation()) {
+    if (isLollipopOrLater()) {
         val cx = revealSettings.centerX
         val cy = revealSettings.centerY
         val width = revealSettings.width

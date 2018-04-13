@@ -14,7 +14,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.taskail.placesapp.R
 import com.taskail.placesapp.ui.animation.*
-import com.taskail.placesapp.util.supportsAnimation
+import com.taskail.placesapp.util.isLollipopOrLater
 import kotlinx.android.synthetic.main.fragment_map_view.*
 
 /**
@@ -60,7 +60,7 @@ class MapViewFragment : Fragment(),
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_map_view, container, false)
 
-        if (supportsAnimation()) {
+        if (isLollipopOrLater()) {
             val revealAnim: RevealAnimationSettings = arguments?.getParcelable(ARG_REVEAL)!!
             reveal(view, revealAnim)
         }
@@ -120,7 +120,7 @@ class MapViewFragment : Fragment(),
      * a higher-order function that will dismiss this fragment.
      */
     override fun dismiss(dismiss: () -> Unit) {
-        if (supportsAnimation()) {
+        if (isLollipopOrLater()) {
             val revealAnim: RevealAnimationSettings = arguments?.getParcelable(ARG_REVEAL)!!
             exit(view!!, revealAnim, dismiss)
         } else {

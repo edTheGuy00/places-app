@@ -18,7 +18,7 @@ import com.taskail.placesapp.ui.animation.DismissibleAnimation
 import com.taskail.placesapp.ui.animation.fabToFragmentReveal
 import com.taskail.placesapp.util.favoritesString
 import com.taskail.placesapp.util.nearbyString
-import com.taskail.placesapp.util.supportsAnimation
+import com.taskail.placesapp.util.isLollipopOrLater
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_viewpage_list.*
@@ -32,7 +32,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     private val TAG = javaClass.simpleName
 
     private lateinit var pagerAdapter: TabsPagerAdapter
-    private lateinit var mapView: MainContract.MapView
+    private var mapView: MainContract.MapView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +92,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
      * devices running Android 5.0 and above.
      */
     private fun openMapsViewFragment() {
-        val mapFragment = (if (supportsAnimation())
+        val mapFragment = (if (isLollipopOrLater())
             MapViewFragment
                     .newAnimatedInstance(
                             fabToFragmentReveal(fab, container)
@@ -114,7 +114,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
 
     override fun closeMapView() {
 
-        if (supportsAnimation()) {
+        if (isLollipopOrLater()) {
 
             (mapView as DismissibleAnimation)
                     .dismiss {
@@ -141,8 +141,8 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                     override fun onPlaceSelected(place: Place) {
 
                         val marker = MarkerOptions().position(place.latLng).title(place.name.toString())
-                        mapView.addMarker(marker)
-                        mapView.zoomToLocation(place.latLng)
+                        mapView?.addMarker(marker)
+                        mapView?.zoomToLocation(place.latLng)
                     }
                 })
                 .build()
@@ -150,7 +150,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     }
 
     override fun onBackPressed() {
-        if (mapView.isOpened) {
+        if (mapView != null && mapView!!.isOpened) {
             closeMapView()
             return
         }
