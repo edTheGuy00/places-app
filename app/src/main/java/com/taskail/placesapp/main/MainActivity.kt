@@ -14,7 +14,7 @@ import com.taskail.placesapp.R
 import com.taskail.placesapp.data.PlacesRepository
 import com.taskail.placesapp.data.models.Geometry
 import com.taskail.placesapp.data.models.Result
-import com.taskail.placesapp.getRepository
+import com.taskail.placesapp.data.getRepository
 import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.PlaceBottomSheetView
 import com.taskail.placesapp.ui.TabsPagerAdapter

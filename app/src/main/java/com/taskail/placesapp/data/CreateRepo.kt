@@ -1,6 +1,5 @@
-package com.taskail.placesapp
+package com.taskail.placesapp.data
 
-import com.taskail.placesapp.data.PlacesRepository
 import com.taskail.placesapp.data.network.PlacesAPI
 import com.taskail.placesapp.data.network.getRetrofitClient
 import io.reactivex.disposables.CompositeDisposable
