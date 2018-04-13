@@ -31,7 +31,8 @@ class NearbyFragment : Fragment(), MainContract.NearbyView {
 
         val view = inflater.inflate(R.layout.fragment_recycler, container, false)
 
-        adapter = PlacesNearbyAdapter(ArrayList(0))
+        adapter = PlacesNearbyAdapter(ArrayList(0),
+                presenter.calculateDistance())
 
         return view
     }
@@ -55,4 +56,5 @@ class NearbyFragment : Fragment(), MainContract.NearbyView {
     override fun resultHasBeenLoaded(): Boolean {
         return adapter.results.isNotEmpty()
     }
+
 }

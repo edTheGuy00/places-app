@@ -3,6 +3,7 @@ package com.taskail.placesapp.main
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.taskail.placesapp.data.models.Geometry
 import com.taskail.placesapp.data.models.Result
 
 /**
@@ -42,5 +43,7 @@ interface MainContract {
         fun requestLocation(zoomToLocation: (LatLng) -> Unit)
 
         fun fetchNearbyResults()
+
+        fun calculateDistance(): (Geometry) -> String
     }
 }

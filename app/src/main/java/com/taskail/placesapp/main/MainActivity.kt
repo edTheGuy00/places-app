@@ -12,14 +12,13 @@ import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder
 import com.taskail.placesapp.R
 import com.taskail.placesapp.data.PlacesRepository
+import com.taskail.placesapp.data.models.Geometry
 import com.taskail.placesapp.getRepository
 import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.TabsPagerAdapter
 import com.taskail.placesapp.ui.animation.DismissibleAnimation
 import com.taskail.placesapp.ui.animation.fabToFragmentReveal
-import com.taskail.placesapp.util.favoritesString
-import com.taskail.placesapp.util.nearbyString
-import com.taskail.placesapp.util.isLollipopOrLater
+import com.taskail.placesapp.util.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_viewpage_list.*
@@ -62,7 +61,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         if (locationReceived) {
             repository.getNearbyPlaces("establishment",
                     "${currentLocation?.latitude},${currentLocation?.longitude}",
-                    1000,
+                    5000,
                     {
                         Log.d(TAG, it.status)
                         if (it.status == "OK") {
@@ -74,13 +73,19 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
+    override fun calculateDistance(): (geometry: Geometry) -> String {
+        return {getDistanceBetweenPoints(
+                currentLocation!!,
+                it)}
+    }
+
     override fun lastKnowLocation(location: Location) {
         Log.d(TAG, "location received")
         currentLocation = location
         locationReceived = true
 
-        if (nearbyView.resultHasBeenLoaded()) {
-
+        if (!nearbyView.resultHasBeenLoaded()) {
+            fetchNearbyResults()
         }
     }
 
@@ -186,8 +191,9 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         super.onBackPressed()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         disposable.clear()
     }
+
 }
