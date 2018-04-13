@@ -56,6 +56,10 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
+    /**
+     * get all establishment within a 5km radius of the users
+     * current location.
+     */
     override fun fetchNearbyResults() {
         Log.d(TAG, "request results")
         if (locationReceived) {
@@ -73,6 +77,12 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
+    /**
+     * calculate the distance between a place and the users current location
+     * this function gets passed to the
+     * @property PlacesNearByAdapter via the
+     * @property nearbyView
+     */
     override fun calculateDistance(): (geometry: Geometry) -> String {
         return {getDistanceBetweenPoints(
                 currentLocation!!,

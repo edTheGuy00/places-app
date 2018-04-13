@@ -9,7 +9,8 @@ buildscript {
             'rxJava'        : '2.1.7',
             'retrofit'      : '2.3.0',
             'okHttp'        : '3.9.0',
-            'gson'          : '2.8.2'
+            'gson'          : '2.8.2',
+            'glide'         : '4.6.1'
     ]
     repositories {
         google()

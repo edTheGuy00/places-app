@@ -35,6 +35,7 @@ class PlacesNearbyAdapter(results: List<Result>,
                 with(result) {
                     placeName.text = name
                     distanceFrom.text = getDistanceString.invoke(geometry)
+
                 }
             }
         }
