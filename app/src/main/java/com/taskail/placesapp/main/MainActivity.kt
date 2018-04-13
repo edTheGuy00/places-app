@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
+import com.taskail.placesapp.getRepository
 import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.TabsPagerAdapter
 import com.taskail.placesapp.ui.animation.DismissibleAnimation
@@ -12,6 +13,7 @@ import com.taskail.placesapp.ui.animation.fabToFragmentReveal
 import com.taskail.placesapp.util.favoritesString
 import com.taskail.placesapp.util.nearbyString
 import com.taskail.placesapp.util.supportsAnimation
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_viewpage_list.*
 
@@ -39,6 +41,17 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
 
     override fun lastKnowLocation(location: Location) {
         Log.d(TAG, "location received")
+
+        val disposable = CompositeDisposable()
+
+        val repo = getRepository(disposable)
+
+        repo.getNearbyPlaces("restaurant",
+                "${location.latitude},${location.longitude}",
+                1000,
+                {
+                    Log.d(TAG, it.results[0].name)
+                })
     }
 
     override fun requestLocation(zoomToLocation: (LatLng) -> Unit) {
