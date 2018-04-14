@@ -1,6 +1,8 @@
 package com.taskail.placesapp.main
 
+import android.content.Intent
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.location.places.AutocompleteFilter
@@ -164,6 +166,15 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         openMapsViewFragment(location, marker)
     }
 
+    override fun opnUrl(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        if (intent.resolveActivity(this.packageManager) != null) {
+            startActivity(intent)
+        }else{
+            Log.e(TAG,"No web browser installed")
+        }
+    }
+
     override fun <T> saveToFavorites(placeToFavorite: T) {
         repository.saveFavorite(createNewFavoritePlace(placeToFavorite), {
             Log.d(TAG, "saved successfully")
@@ -225,6 +236,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                         val marker = MarkerOptions().position(place.latLng).title(place.name.toString())
                         mapView?.addMarker(marker)
                         mapView?.zoomToLocation(place.latLng)
+                        mapView?.displayPlaceCard(place)
                     }
                 })
                 .build()

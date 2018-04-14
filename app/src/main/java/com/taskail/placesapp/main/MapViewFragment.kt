@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -113,6 +114,23 @@ class MapViewFragment : Fragment(),
                 }
             }
 
+        }
+    }
+
+    override fun displayPlaceCard(place: Place) {
+        placeCard.visibility = View.VISIBLE
+        placeName.text = place.name
+        if (place.websiteUri != null) {
+            with(urlLink) {
+                text = place.websiteUri.toString()
+                setOnClickListener {
+                    presenter.opnUrl(place.websiteUri)
+                }
+            }
+        }
+
+        favoritesButton.setOnClickListener {
+            presenter.saveToFavorites(place)
         }
     }
 

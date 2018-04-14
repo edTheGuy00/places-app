@@ -1,5 +1,7 @@
 package com.taskail.placesapp.main
 
+import android.net.Uri
+import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
@@ -29,6 +31,8 @@ interface MainContract {
         fun zoomToLocation(myLocation: LatLng)
 
         fun addMarker(marker: MarkerOptions)
+
+        fun displayPlaceCard(place: Place)
     }
 
     interface NearbyView {
@@ -70,5 +74,7 @@ interface MainContract {
         fun <T>saveToFavorites(placeToFavorite: T)
 
         fun deleteFavorite(favoritePlace: FavoritePlace)
+
+        fun opnUrl(uri: Uri)
     }
 }
