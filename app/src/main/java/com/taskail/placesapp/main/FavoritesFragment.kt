@@ -26,7 +26,7 @@ class FavoritesFragment : Fragment(), MainContract.FavoritesView {
         val view = inflater.inflate(R.layout.fragment_recycler, container, false)
 
         adapter = FavoritePlacesAdapter(ArrayList(0), {
-
+            presenter.openBottomSheet(it)
         })
 
         return view

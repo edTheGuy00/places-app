@@ -1,7 +1,7 @@
 package com.taskail.placesapp.data
 
 import com.taskail.placesapp.data.local.FavoritesDao
-import com.taskail.placesapp.data.local.getFavoritesFromDatabase
+//import com.taskail.placesapp.data.local.getFavoritesFromDatabase
 import com.taskail.placesapp.data.local.saveFavoriteToDatabase
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Response
@@ -45,7 +45,17 @@ class PlacesRepository(private val disposable: CompositeDisposable,
      */
     override fun getFavorites(handleFavorites: (List<FavoritePlace>) -> Unit,
                               handleThrowable: (Throwable) -> Unit) {
-        fetchOnDisposable(getFavoritesFromDatabase(favoritesDao), handleFavorites, handleThrowable)
+
+        disposable.add(favoritesDao.getLocations()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    handleFavorites(it)
+                }, {
+                    handleThrowable(it)
+                }))
+
+        //fetchOnDisposable(getFavoritesFromDatabase(favoritesDao), handleFavorites, handleThrowable)
     }
 
     /**

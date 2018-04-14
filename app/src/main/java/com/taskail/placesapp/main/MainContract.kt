@@ -63,7 +63,7 @@ interface MainContract {
 
         fun calculateDistance(): (Geometry) -> String
 
-        fun openBottomSheet(result: Result)
+        fun <T>openBottomSheet(place: T)
 
         fun viewLocationOnMap(location: LatLng, name: String)
 

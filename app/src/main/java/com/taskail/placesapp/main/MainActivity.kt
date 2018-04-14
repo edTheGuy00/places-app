@@ -152,10 +152,12 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         tabLayout.setupWithViewPager(viewPager)
     }
 
-    override fun openBottomSheet(result: Result) {
+    override fun <T> openBottomSheet(place: T) {
         val placeBottomSheet = PlaceBottomSheetView().apply {
             presenter = this@MainActivity
-            this.result = result
+            when(place) {
+                is Result -> this.result = place
+            }
         }
 
         placeBottomSheet.show(supportFragmentManager, placeBottomSheet.tag)
