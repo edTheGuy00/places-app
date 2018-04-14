@@ -13,7 +13,7 @@ interface FavoritesDao {
 
     /**
      * get all favorites from the favorites database table
-     * @return a list of locations
+     * @return a Flowable that will emit a list of items eveytime the database is updated
      */
     @Query("SELECT * FROM Favorites") fun getLocations(): Flowable<List<FavoritePlace>>
 

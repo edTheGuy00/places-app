@@ -91,6 +91,9 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
+    /**
+     * get all of the users favorite places from the local database
+     */
     override fun getFavoritePlaces() {
         repository.getFavorites({
             favoritesView.displayFavorites(it)
@@ -99,6 +102,13 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         })
     }
 
+    /**
+     * this function will take
+     * @param T as either
+     * @property Geometry or
+     * @property LatLng and it will calculate the distance from the user and
+     * @return a distance in meters as a string
+     */
     override fun <T> calculateDistance(): (T) -> String {
         return {getDistanceBetweenPoints(
                 currentLocation!!,
@@ -149,6 +159,11 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         tabLayout.setupWithViewPager(viewPager)
     }
 
+    /**
+     * Clicking on an item fro either the favorites fragment or
+     * results fragment will open up a BottomSheet Fragment. we pass
+     * @param place to display.
+     */
     override fun <T> openBottomSheet(place: T) {
         val placeBottomSheet = PlaceBottomSheetView().apply {
             presenter = this@MainActivity
@@ -161,12 +176,18 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         placeBottomSheet.show(supportFragmentManager, placeBottomSheet.tag)
     }
 
+    /**
+     * will be called from the BottomSheet to open the MapView
+     */
     override fun viewLocationOnMap(location: LatLng, name: String) {
         Log.d(TAG, location.toString())
         val marker = MarkerOptions().position(location).title(name)
         openMapsViewFragment(location, marker)
     }
 
+    /**
+     * Open the url link that was obtained from the places search.
+     */
     override fun opnUrl(uri: Uri) {
         val intent = Intent(Intent.ACTION_VIEW, uri)
         if (intent.resolveActivity(this.packageManager) != null) {
@@ -176,6 +197,10 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         }
     }
 
+    /**
+     * save a new favorite place,
+     * @param placeToFavorite the generic type of place to be saved.
+     */
     override fun <T> saveToFavorites(placeToFavorite: T) {
         repository.saveFavorite(createNewFavoritePlace(placeToFavorite), {
             Log.d(TAG, "saved successfully")
@@ -187,9 +212,12 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     }
 
     /**
-     * Fab button opens up the mapView.
-     * Mapview will have a circular animation for
-     * devices running Android 5.0 and above.
+     * Map view can be opened from 3 different places,
+     * results from google api,
+     * favorited items,
+     * or the fab.
+     * @param location and
+     * @param marker will only be passed from results or favorite fragments
      */
     private fun openMapsViewFragment(location: LatLng? = null, marker: MarkerOptions? = null) {
 
@@ -206,6 +234,10 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                 .commit()
     }
 
+    /**
+     * check if we can animate the closing of the map,
+     * otherwise just close
+     */
     override fun closeMapView() {
 
         if (isLollipopOrLater()) {
@@ -227,6 +259,11 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                 .commit()
     }
 
+    /**
+     * @property MapViewFragment will call search.
+     * Here we display a SimplePlacesSearchDialog https://github.com/edTheGuy00/SimplePlacesSearchDialog
+     * @param latLngBounds search will be within these bounds.
+     */
     override fun handleSearchFabClick(latLngBounds: LatLngBounds) {
         SimplePlacesSearchDialogBuilder(this)
                 .setResultsFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
@@ -244,6 +281,9 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                 .show()
     }
 
+    /**
+     * close the mapview if opened.
+     */
     override fun onBackPressed() {
         if (mapView != null && mapView!!.isOpened) {
             closeMapView()

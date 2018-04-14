@@ -15,6 +15,9 @@ class PlacesApplication : Application() {
         lateinit var INSTANCE: PlacesApplication
     }
 
+    /**
+     * create instance and database
+     */
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this

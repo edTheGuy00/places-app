@@ -10,6 +10,9 @@ import com.taskail.placesapp.data.models.FavoritePlace
  *Created by ed on 4/13/18.
  */
 
+/**
+ * the database for this application.
+ */
 @Database(entities = [(FavoritePlace::class)], version = 1)
 abstract class PlacesAppDatabase : RoomDatabase() {
 

@@ -32,6 +32,9 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /**
+         * determine the type of place that we have and display it accordingly.
+         */
         when(place) {
             is Result -> {
                 placeName.text = (place as Result).name
@@ -56,6 +59,9 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
         }
     }
 
+    /**
+     * determine the type of place that we have and open it accordingly.
+     */
     private fun mapClickHandler() {
         when(place) {
             is Result -> {
@@ -73,6 +79,9 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
         }
     }
 
+    /**
+     * determine the type of place that we have and save it accordingly.
+     */
     private fun favButtonHandler() {
         when(place) {
             is Result -> {

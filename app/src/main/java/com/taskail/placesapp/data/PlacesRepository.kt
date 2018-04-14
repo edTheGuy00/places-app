@@ -46,7 +46,9 @@ class PlacesRepository(private val disposable: CompositeDisposable,
     /**
      * get all the users favorite places from the local database
      * @param handleFavorites function that will be called to handle the list of favorites
-     * @param handleThrowable function that will handle any errors
+     * @param handleThrowable function that will handle any errors,
+     *
+     * here we subscribe on a flowable to publish results when the database changes.
      */
     override fun getFavorites(handleFavorites: (List<FavoritePlace>) -> Unit,
                               handleThrowable: (Throwable) -> Unit) {

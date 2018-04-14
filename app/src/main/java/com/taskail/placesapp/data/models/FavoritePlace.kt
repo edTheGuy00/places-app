@@ -7,6 +7,9 @@ import android.arch.persistence.room.PrimaryKey
  *Created by ed on 4/13/18.
  */
 
+/**
+ * table definition for the local database
+ */
 @Entity(tableName = "favorites")
 data class FavoritePlace(
         @PrimaryKey var id: String,

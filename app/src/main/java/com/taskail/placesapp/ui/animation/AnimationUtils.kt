@@ -15,6 +15,10 @@ import com.taskail.placesapp.util.isLollipopOrLater
  *Created by ed on 3/28/18.
  */
 
+/**
+ * circular reveal suitable for Floating Action Buttons,
+ * created following: https://medium.com/@gabornovak/circular-reveal-animation-between-fragments-d8ed9011aec
+ */
 private const val animationDuration = 860.toLong()
 
 @SuppressLint("NewApi")

@@ -86,6 +86,9 @@ class MapViewFragment : Fragment(),
         }
 
         fabSearch.setOnClickListener {
+            /**
+             * create a latlng bounds to search within the current view of the map.
+             */
             val latLngBounds = googleMap.projection.visibleRegion.latLngBounds
             presenter.handleSearchFabClick(latLngBounds)
         }
@@ -117,6 +120,9 @@ class MapViewFragment : Fragment(),
         }
     }
 
+    /**
+     * this card will be opened when searching for a place.
+     */
     override fun displayPlaceCard(place: Place) {
         placeCard.visibility = View.VISIBLE
         placeName.text = place.name
@@ -146,6 +152,9 @@ class MapViewFragment : Fragment(),
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18f))
     }
 
+    /**
+     * add a marker to the map
+     */
     override fun addMarker(marker: MarkerOptions) {
         googleMap.addMarker(marker)
     }

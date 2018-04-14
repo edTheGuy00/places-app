@@ -10,6 +10,15 @@ import com.taskail.placesapp.ui.animation.fabToFragmentReveal
  *Created by ed on 4/13/18.
  */
 
+/**
+ * create a new
+ * @property MapViewFragment
+ * @param location a nullable LatLng
+ * @param marker a nullable Marker
+ *
+ * based on these two params and the current Android build version we
+ * return the appropriate MapView Object.
+ */
 fun getMapViewFragment(location: LatLng?,
                        marker: MarkerOptions?,
                        fab: View, container: View):

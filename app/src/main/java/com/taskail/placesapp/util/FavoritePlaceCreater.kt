@@ -9,6 +9,11 @@ import com.taskail.placesapp.data.models.Result
  */
 
 
+/**
+ * here we determine what
+ * @param place is and create a new FavoritePlace accordingly.
+ * @return created FavoritePlace
+ */
 fun <T>createNewFavoritePlace(place: T): FavoritePlace {
     return when(place) {
         is Result -> {

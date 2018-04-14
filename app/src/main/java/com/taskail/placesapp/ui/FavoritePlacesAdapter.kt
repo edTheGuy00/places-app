@@ -37,6 +37,8 @@ class FavoritePlacesAdapter(favorites: List<FavoritePlace>,
             with(itemView) {
                 with(favorite) {
                     placeName.text = name
+
+                    // users current location is  not available right away.
                     //distanceFrom.text = getDistanceString(LatLng(lat, lng))
 
                     if (icon.isNotBlank()) {

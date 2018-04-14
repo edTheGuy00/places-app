@@ -13,45 +13,11 @@ import kotlin.math.roundToInt
  */
 
 /**
- * an attempt at creating LatLngBounds based on a 10km radius of the users location
+ * receive the
+ * @param place and determine what type it is then calculate the distance from
+ * @param location and
+ * @return distance in meters as a string
  */
-
-fun calculateUserRadius(location: Location) : Single<LatLngBounds> {
-
-    return Single.create<LatLngBounds> { e ->
-
-        val lat = location.latitude
-        val lng = location.longitude
-
-        // Radius of 10km
-        val searchRadius = 10000
-
-        val longitudeD = Math.asin(searchRadius / (6378000 * Math.cos(Math.PI * lat / 180))) * 180 / Math.PI
-        val latitudeD = Math.asin(searchRadius.toDouble() / 6378000.toDouble()) * 180 / Math.PI
-
-        val latitudeMax = lat + latitudeD
-        val latitudeMin = lat - latitudeD
-        val longitudeMax = lng + longitudeD
-        val longitudeMin = lng - longitudeD
-
-        // not sure how to set SW NE bounds...?
-        try {
-
-            val southWest = LatLng(latitudeMax, longitudeMax)
-            val northEast = LatLng(latitudeMin, longitudeMin)
-
-
-            val latLngBounds = LatLngBounds(southWest, northEast)
-
-            e.onSuccess(latLngBounds)
-        } catch (e: Exception) {
-            Log.e("calculate", e.message)
-        }
-
-
-    }
-}
-
 fun <T> getDistanceBetweenPoints(location: Location,
                              place: T): String{
 
@@ -76,6 +42,10 @@ fun <T> getDistanceBetweenPoints(location: Location,
 
 }
 
+/**
+ * calculate distance and
+ * @return distance
+ */
 fun distance(lat1: Double, lat2: Double, lon1: Double,
              lon2: Double): String {
 
