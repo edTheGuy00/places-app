@@ -1,12 +1,15 @@
 package com.taskail.placesapp
 
 import android.app.Application
+import com.taskail.placesapp.data.local.PlacesAppDatabase
 
 /**
  *Created by ed on 4/12/18.
  */
 
 class PlacesApplication : Application() {
+
+    lateinit var database: PlacesAppDatabase
 
     companion object {
         lateinit var INSTANCE: PlacesApplication
@@ -15,5 +18,7 @@ class PlacesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
+
+        database = PlacesAppDatabase.getInstance(this)
     }
 }

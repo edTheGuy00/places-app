@@ -10,11 +10,14 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder
+import com.taskail.placesapp.PlacesApplication
 import com.taskail.placesapp.R
+import com.taskail.placesapp.data.DataSource
 import com.taskail.placesapp.data.PlacesRepository
 import com.taskail.placesapp.data.models.Geometry
 import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.data.getRepository
+import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.PlaceBottomSheetView
 import com.taskail.placesapp.ui.TabsPagerAdapter
@@ -33,11 +36,13 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
 
     private val TAG = javaClass.simpleName
 
+    private val database by lazy { (application as PlacesApplication).database }
+
     private lateinit var pagerAdapter: TabsPagerAdapter
     private var mapView: MainContract.MapView? = null
     private var currentLocation: Location? = null
 
-    private lateinit var repository: PlacesRepository
+    private lateinit var repository: DataSource
     private lateinit var disposable: CompositeDisposable
     private lateinit var nearbyView: NearbyFragment
 
@@ -48,7 +53,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         setContentView(R.layout.activity_main)
 
         disposable = CompositeDisposable()
-        repository = getRepository(disposable)
+        repository = getRepository(disposable, database.favoritesDao())
 
         pagerAdapter = TabsPagerAdapter(supportFragmentManager)
         setupViewPager()
@@ -65,14 +70,17 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     override fun fetchNearbyResults() {
         Log.d(TAG, "request results")
         if (locationReceived) {
-            repository.getNearbyPlaces("establishment",
-                    "${currentLocation?.latitude},${currentLocation?.longitude}",
-                    5000,
-                    {
-                        Log.d(TAG, it.status)
+            repository.getNearbyPlaces(
+                    type = "establishment",
+                    location = "${currentLocation?.latitude},${currentLocation?.longitude}",
+                    radius = 5000,
+                    handleResponse = {
                         if (it.status == "OK") {
                             nearbyView.displayResults(it.results)
                         }
+                    },
+                    handleThrowable ={
+                        Log.e(TAG, "something went wrong")
                     })
         } else {
             Log.d(TAG, "no location")
@@ -150,7 +158,18 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     override fun <T> saveToFavorites(placeToFavorite: T) {
         when(placeToFavorite) {
             is Result -> {
+                val newFavorite = FavoritePlace(
+                        placeToFavorite.id,
+                        placeToFavorite.name,
+                        placeToFavorite.types[0],
+                        placeToFavorite.icon,
+                        placeToFavorite.geometry.location.lat,
+                        placeToFavorite.geometry.location.lng
+                )
 
+                repository.saveFavorite(newFavorite, {
+                    Log.d(TAG, "saved successfully")
+                })
             }
         }
     }
