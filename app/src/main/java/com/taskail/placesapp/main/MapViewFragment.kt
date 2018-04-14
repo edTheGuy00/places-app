@@ -120,6 +120,9 @@ class MapViewFragment : Fragment(),
     override fun displayPlaceCard(place: Place) {
         placeCard.visibility = View.VISIBLE
         placeName.text = place.name
+        if (place.address != null){
+            address.text = place.address
+        }
         if (place.websiteUri != null) {
             with(urlLink) {
                 text = place.websiteUri.toString()
