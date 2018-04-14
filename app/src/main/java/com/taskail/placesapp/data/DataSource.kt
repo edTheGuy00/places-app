@@ -12,6 +12,7 @@ interface DataSource {
     fun getNearbyPlaces(type: String,
                         location: String,
                         radius: Int,
+                        apiKey: String,
                         handleResponse: (Response) -> Unit,
                         handleThrowable: (Throwable) -> Unit)
 

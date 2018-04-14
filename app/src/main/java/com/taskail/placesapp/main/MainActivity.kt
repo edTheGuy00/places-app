@@ -77,6 +77,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
                     type = "establishment",
                     location = "${currentLocation?.latitude},${currentLocation?.longitude}",
                     radius = 5000,
+                    apiKey = getString(R.string.google_api_key),
                     handleResponse = {
                         if (it.status == "OK") {
                             nearbyView.displayResults(it.results)

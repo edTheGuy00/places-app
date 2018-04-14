@@ -35,10 +35,11 @@ class PlacesRepository(private val disposable: CompositeDisposable,
     override fun getNearbyPlaces(type: String,
                                  location: String,
                                  radius: Int,
+                                 apiKey: String,
                                  handleResponse: (Response) -> Unit,
                                  handleThrowable: (Throwable) -> Unit) {
 
-        fetchOnDisposable(getNearbyPlaces(type, location, radius), handleResponse, handleThrowable)
+        fetchOnDisposable(getNearbyPlaces(type, location, radius, apiKey), handleResponse, handleThrowable)
 
     }
 
@@ -76,8 +77,8 @@ class PlacesRepository(private val disposable: CompositeDisposable,
      * @property placesAPI.getNearbyPlaces
      * as an Observable
      */
-    private fun getNearbyPlaces(type: String, location: String, radius: Int) : Observable<Response> {
-        return placesAPI.getNearbyPlaces(type, location, radius)
+    private fun getNearbyPlaces(type: String, location: String, radius: Int, apiKey: String) : Observable<Response> {
+        return placesAPI.getNearbyPlaces(type, location, radius, apiKey)
     }
 
     /**
