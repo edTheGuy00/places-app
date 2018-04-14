@@ -156,22 +156,9 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     }
 
     override fun <T> saveToFavorites(placeToFavorite: T) {
-        when(placeToFavorite) {
-            is Result -> {
-                val newFavorite = FavoritePlace(
-                        placeToFavorite.id,
-                        placeToFavorite.name,
-                        placeToFavorite.types[0],
-                        placeToFavorite.icon,
-                        placeToFavorite.geometry.location.lat,
-                        placeToFavorite.geometry.location.lng
-                )
-
-                repository.saveFavorite(newFavorite, {
-                    Log.d(TAG, "saved successfully")
-                })
-            }
-        }
+        repository.saveFavorite(createNewFavoritePlace(placeToFavorite), {
+            Log.d(TAG, "saved successfully")
+        })
     }
 
     /**
