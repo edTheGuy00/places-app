@@ -52,14 +52,27 @@ fun calculateUserRadius(location: Location) : Single<LatLngBounds> {
     }
 }
 
-fun getDistanceBetweenPoints(location: Location,
-                             geometry: Geometry): String{
+fun <T> getDistanceBetweenPoints(location: Location,
+                             place: T): String{
 
 
-    return distance(location.latitude,
-            geometry.location.lat,
-            location.longitude,
-            geometry.location.lng)
+    return when(place){
+        is Geometry -> {
+            distance(location.latitude,
+                    place.location.lat,
+                    location.longitude,
+                    place.location.lng)
+        }
+        is LatLng -> {
+            distance(location.latitude,
+                    place.latitude,
+                    location.longitude,
+                    place.longitude)
+        }
+        else -> throw IllegalArgumentException("Invalid Type")
+    }
+
+
 
 }
 

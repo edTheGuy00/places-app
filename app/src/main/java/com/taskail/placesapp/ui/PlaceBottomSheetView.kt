@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
+import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.main.MainContract
 import kotlinx.android.synthetic.main.bottom_sheet_place.*
@@ -19,7 +20,7 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
 
     override lateinit var presenter: MainContract.Presenter
 
-    lateinit var result: Result
+    var place = Any()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -31,17 +32,55 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        placeName.text = result.name
-        typeOfPlace.text = result.types[0]
+        when(place) {
+            is Result -> {
+                placeName.text = (place as Result).name
+                typeOfPlace.text = (place as Result).types[0]
+                favoritesButton.setText(R.string.add_to_favorites)
+            }
+            is FavoritePlace -> {
+                placeName.text = (place as FavoritePlace).name
+                favoritesButton.setText(R.string.remove_from_fav)
+            }
+        }
+
 
         mapButton.setOnClickListener {
             this.dismiss()
-            val latLng = LatLng(result.geometry.location.lat, result.geometry.location.lng)
-            presenter.viewLocationOnMap(latLng, result.name)
+            mapClickHandler()
         }
 
         favoritesButton.setOnClickListener {
-            presenter.saveToFavorites(result)
+            this.dismiss()
+            favButtonHandler()
+        }
+    }
+
+    private fun mapClickHandler() {
+        when(place) {
+            is Result -> {
+                with((place as Result)){
+                    val latLng = LatLng(geometry.location.lat, geometry.location.lng)
+                    presenter.viewLocationOnMap(latLng, name)
+                }
+            }
+            is FavoritePlace -> {
+                with((place as FavoritePlace)){
+                    val latLng = LatLng(lat, lng)
+                    presenter.viewLocationOnMap(latLng, name)
+                }
+            }
+        }
+    }
+
+    private fun favButtonHandler() {
+        when(place) {
+            is Result -> {
+                presenter.saveToFavorites(place)
+            }
+            is FavoritePlace -> {
+                presenter.deleteFavorite(place as FavoritePlace)
+            }
         }
     }
 }

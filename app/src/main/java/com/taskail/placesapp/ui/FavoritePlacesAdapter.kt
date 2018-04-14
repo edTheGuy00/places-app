@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.ui.FavoritePlacesAdapter.ItemsViewHolder
@@ -16,6 +17,7 @@ import kotlinx.android.synthetic.main.item_place.view.*
  */
 
 class FavoritePlacesAdapter(favorites: List<FavoritePlace>,
+                            private val getDistanceString: (LatLng) -> String,
                             private val openResult: (FavoritePlace) -> Unit) :
         Adapter<ItemsViewHolder>() {
 
@@ -29,11 +31,13 @@ class FavoritePlacesAdapter(favorites: List<FavoritePlace>,
     class ItemsViewHolder(itemView: View) : ViewHolder(itemView) {
 
         fun setItem(favorite: FavoritePlace,
+                    getDistanceString: (LatLng) -> String,
                     openResult: (FavoritePlace) -> Unit) {
 
             with(itemView) {
                 with(favorite) {
                     placeName.text = name
+                    //distanceFrom.text = getDistanceString(LatLng(lat, lng))
 
                     if (icon.isNotBlank()) {
                         Glide.with(itemView).load(icon).into(circularImageView)
@@ -56,6 +60,7 @@ class FavoritePlacesAdapter(favorites: List<FavoritePlace>,
 
     override fun onBindViewHolder(holder: ItemsViewHolder, position: Int) {
         holder.setItem(favorites[position],
+                getDistanceString,
                 openResult)
     }
 

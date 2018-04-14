@@ -61,12 +61,14 @@ interface MainContract {
 
         fun getFavoritePlaces()
 
-        fun calculateDistance(): (Geometry) -> String
+        fun <T>calculateDistance(): (T) -> String
 
         fun <T>openBottomSheet(place: T)
 
         fun viewLocationOnMap(location: LatLng, name: String)
 
         fun <T>saveToFavorites(placeToFavorite: T)
+
+        fun deleteFavorite(favoritePlace: FavoritePlace)
     }
 }

@@ -96,13 +96,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         })
     }
 
-    /**
-     * calculate the distance between a place and the users current location
-     * this function gets passed to the
-     * @property PlacesNearByAdapter via the
-     * @property nearbyView
-     */
-    override fun calculateDistance(): (geometry: Geometry) -> String {
+    override fun <T> calculateDistance(): (T) -> String {
         return {getDistanceBetweenPoints(
                 currentLocation!!,
                 it)}
@@ -156,7 +150,8 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         val placeBottomSheet = PlaceBottomSheetView().apply {
             presenter = this@MainActivity
             when(place) {
-                is Result -> this.result = place
+                is Result -> this.place = place
+                is FavoritePlace -> this.place = place
             }
         }
 
@@ -173,6 +168,10 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         repository.saveFavorite(createNewFavoritePlace(placeToFavorite), {
             Log.d(TAG, "saved successfully")
         })
+    }
+
+    override fun deleteFavorite(favoritePlace: FavoritePlace) {
+
     }
 
     /**
