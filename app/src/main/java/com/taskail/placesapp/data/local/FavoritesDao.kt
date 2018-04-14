@@ -1,9 +1,6 @@
 package com.taskail.placesapp.data.local
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.taskail.placesapp.data.models.FavoritePlace
 import io.reactivex.Flowable
 
@@ -24,5 +21,10 @@ interface FavoritesDao {
      * insert a new favorite into the database
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)fun addLocation(location: FavoritePlace)
+
+    /**
+     * remove a favorite from the database
+     */
+    @Delete fun removeFavorite(favoritePlace: FavoritePlace)
 
 }

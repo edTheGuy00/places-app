@@ -1,6 +1,8 @@
 package com.taskail.placesapp.data
 
+import android.util.Log
 import com.taskail.placesapp.data.local.FavoritesDao
+import com.taskail.placesapp.data.local.removeFavFromDatabase
 //import com.taskail.placesapp.data.local.getFavoritesFromDatabase
 import com.taskail.placesapp.data.local.saveFavoriteToDatabase
 import com.taskail.placesapp.data.models.FavoritePlace
@@ -19,6 +21,8 @@ class PlacesRepository(private val disposable: CompositeDisposable,
                        private val placesAPI: PlacesAPI,
                        private val favoritesDao: FavoritesDao) :
         DataSource {
+
+    private val TAG = javaClass.simpleName
 
     /**
      * fetches all the nearby places from the google api
@@ -56,6 +60,15 @@ class PlacesRepository(private val disposable: CompositeDisposable,
                 }))
 
         //fetchOnDisposable(getFavoritesFromDatabase(favoritesDao), handleFavorites, handleThrowable)
+    }
+
+    override fun removeFavorite(favoritePlace: FavoritePlace) {
+        disposable.add(removeFavFromDatabase(favoritesDao, favoritePlace)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.d(TAG, "removed successfully")
+                }))
     }
 
     /**

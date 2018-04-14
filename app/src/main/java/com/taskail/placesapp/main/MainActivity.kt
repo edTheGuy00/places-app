@@ -171,7 +171,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     }
 
     override fun deleteFavorite(favoritePlace: FavoritePlace) {
-
+        repository.removeFavorite(favoritePlace)
     }
 
     /**

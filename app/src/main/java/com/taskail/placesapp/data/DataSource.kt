@@ -19,4 +19,6 @@ interface DataSource {
                      handleThrowable: (Throwable) -> Unit)
 
     fun saveFavorite(favoritePlace: FavoritePlace, handleOnSuccess: () -> Unit)
+
+    fun removeFavorite(favoritePlace: FavoritePlace)
 }

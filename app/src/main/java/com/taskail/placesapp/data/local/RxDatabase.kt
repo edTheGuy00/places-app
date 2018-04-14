@@ -31,3 +31,11 @@ fun saveFavoriteToDatabase(favoritesDao: FavoritesDao, favoritePlace: FavoritePl
         e.onComplete()
     }
 }
+
+@NonNull fun removeFavFromDatabase(favoritesDao: FavoritesDao, favoritePlace: FavoritePlace): Completable {
+
+    return Completable.create { e ->
+        favoritesDao.removeFavorite(favoritePlace)
+        e.onComplete()
+    }
+}
