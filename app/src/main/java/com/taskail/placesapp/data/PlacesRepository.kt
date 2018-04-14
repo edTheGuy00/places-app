@@ -23,7 +23,7 @@ class PlacesRepository(private val disposable: CompositeDisposable,
     /**
      * fetches all the nearby places from the google api
      * @param type the type of location we want
-     * @param location the current location of the use
+     * @param location the current location of the user
      * @param radius the radius around the users location
      * @param handleResponse a higher-order function that will be called when the results are returned
      * @param handleThrowable a higher-order function that will handle the errors
@@ -60,7 +60,7 @@ class PlacesRepository(private val disposable: CompositeDisposable,
     /**
      * insert a new favorite place into the database
      * @param favoritePlace favorite to be inserted
-     * @param handleOnSuccess function that will be called once item is save successfully
+     * @param handleOnSuccess function that will be called once item is saved successfully
      */
     override fun saveFavorite(favoritePlace: FavoritePlace, handleOnSuccess: () -> Unit) {
         disposable.add(saveFavoriteToDatabase(favoritesDao, favoritePlace)

@@ -3,6 +3,7 @@ package com.taskail.placesapp.main
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Geometry
 import com.taskail.placesapp.data.models.Location
 import com.taskail.placesapp.data.models.Result
@@ -13,7 +14,7 @@ import com.taskail.placesapp.data.models.Result
 
 interface MainContract {
 
-    interface BottomShetView {
+    interface BottomSheetView {
 
         var presenter: Presenter
 
@@ -39,6 +40,13 @@ interface MainContract {
         fun resultHasBeenLoaded() : Boolean
     }
 
+    interface FavoritesView {
+
+        var presenter: Presenter
+
+        fun displayFavorites(favorites: List<FavoritePlace>)
+    }
+
     interface Presenter {
 
         fun handleSearchFabClick(latLngBounds: LatLngBounds)
@@ -50,6 +58,8 @@ interface MainContract {
         fun requestLocation(zoomToLocation: (LatLng) -> Unit)
 
         fun fetchNearbyResults()
+
+        fun getFavoritePlaces()
 
         fun calculateDistance(): (Geometry) -> String
 

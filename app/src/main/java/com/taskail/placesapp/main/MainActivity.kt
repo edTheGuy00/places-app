@@ -45,6 +45,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     private lateinit var repository: DataSource
     private lateinit var disposable: CompositeDisposable
     private lateinit var nearbyView: NearbyFragment
+    private lateinit var favoritesView: FavoritesFragment
 
     private var locationReceived = false
 
@@ -85,6 +86,14 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         } else {
             Log.d(TAG, "no location")
         }
+    }
+
+    override fun getFavoritePlaces() {
+        repository.getFavorites({
+            favoritesView.displayFavorites(it)
+        }, {
+            Log.d(TAG, "Something went wrong")
+        })
     }
 
     /**
@@ -134,7 +143,10 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
             nearbyView = this
             presenter = this@MainActivity
         }, nearbyString())
-        pagerAdapter.addFragment(FavoritesFragment(), favoritesString())
+        pagerAdapter.addFragment(FavoritesFragment().apply {
+            favoritesView = this
+            presenter = this@MainActivity
+        }, favoritesString())
 
         viewPager.adapter = pagerAdapter
         tabLayout.setupWithViewPager(viewPager)
@@ -168,28 +180,12 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
      */
     private fun openMapsViewFragment(location: LatLng? = null, marker: MarkerOptions? = null) {
 
-        val mapFragment = (if (isLollipopOrLater())
-            if (location != null) {
-                MapViewFragment.newAnimatedInstance(fabToFragmentReveal(fab, container)).apply {
-                    this.location = location
-                    this.marker = marker
+        val mapFragment = (getMapViewFragment(location, marker, fab, container))
+                .also {
+                    mapView = it
+                }.apply {
+                    presenter = this@MainActivity
                 }
-            } else {
-                MapViewFragment.newAnimatedInstance(fabToFragmentReveal(fab, container))
-            }
-        else
-            if (location != null) {
-                MapViewFragment.newInstance().apply {
-                    this.location = location
-                    this.marker = marker
-                }
-            } else {
-                MapViewFragment.newInstance()
-            }).also {
-            mapView = it
-        }.apply {
-            presenter = this@MainActivity
-        }
 
         supportFragmentManager
                 .beginTransaction()

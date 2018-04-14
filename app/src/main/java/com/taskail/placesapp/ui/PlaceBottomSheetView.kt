@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_place.*
  *Created by ed on 4/13/18.
  */
 
-class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShetView {
+class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomSheetView {
 
     override lateinit var presenter: MainContract.Presenter
 

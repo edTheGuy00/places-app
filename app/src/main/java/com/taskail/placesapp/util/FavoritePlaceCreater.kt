@@ -31,6 +31,6 @@ fun <T>createNewFavoritePlace(place: T): FavoritePlace {
             )
         }
 
-        else -> throw IllegalArgumentException("Invalid Type Passed")
+        else -> throw IllegalArgumentException("Invalid Type")
     }
 }
