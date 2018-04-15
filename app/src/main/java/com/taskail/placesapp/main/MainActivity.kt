@@ -14,6 +14,7 @@ import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog
 import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder
 import com.taskail.placesapp.PlacesApplication
 import com.taskail.placesapp.R
+import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.DataSource
 import com.taskail.placesapp.data.PlacesRepository
 import com.taskail.placesapp.data.models.Geometry
@@ -192,7 +193,7 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         val placeBottomSheet = PlaceBottomSheetView().apply {
             presenter = this@MainActivity
             when(place) {
-                is Result -> this.place = place
+                is SearchNearbyQuery.SearchNearby -> this.place = place
                 is FavoritePlace -> this.place = place
             }
         }

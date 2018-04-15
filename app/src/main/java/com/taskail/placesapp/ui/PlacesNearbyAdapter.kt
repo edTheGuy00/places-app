@@ -9,11 +9,8 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
 import com.taskail.placesapp.SearchNearbyQuery
-import com.taskail.placesapp.data.models.Geometry
-import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.ui.PlacesNearbyAdapter.ItemsViewHolder
 import kotlinx.android.synthetic.main.item_place.view.*
-import kotlin.math.ln
 
 /**
  *Created by ed on 4/12/18.

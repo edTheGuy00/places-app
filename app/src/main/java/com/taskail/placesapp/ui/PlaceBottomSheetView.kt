@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
+import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.main.MainContract
@@ -36,9 +37,8 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
          * determine the type of place that we have and display it accordingly.
          */
         when(place) {
-            is Result -> {
-                placeName.text = (place as Result).name
-                typeOfPlace.text = (place as Result).types[0]
+            is SearchNearbyQuery.SearchNearby -> {
+                placeName.text = (place as SearchNearbyQuery.SearchNearby).name()
                 favoritesButton.setText(R.string.add_to_favorites)
             }
             is FavoritePlace -> {
@@ -64,10 +64,14 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
      */
     private fun mapClickHandler() {
         when(place) {
-            is Result -> {
-                with((place as Result)){
-                    val latLng = LatLng(geometry.location.lat, geometry.location.lng)
-                    presenter.viewLocationOnMap(latLng, name)
+            is SearchNearbyQuery.SearchNearby -> {
+                with((place as SearchNearbyQuery.SearchNearby)){
+                    val lat = geometry().location().lat()
+                    val lng = geometry().location().lng()
+                    if (lat != null && lng != null ) {
+                        val latLng = LatLng(lat, lng)
+                        presenter.viewLocationOnMap(latLng, name())
+                    }
                 }
             }
             is FavoritePlace -> {
