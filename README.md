@@ -5,6 +5,12 @@ Places app
 
 [Simple Places Autocomplete Dialog](https://github.com/edTheGuy00/SimplePlacesSearchDialog)
 
+## Graphql Server
+
+[live](https://places-app-graphql.herokuapp.com/)
+
+[source](https://github.com/edTheGuy00/places-app-backend)
+
 ## Setup
 
 Clone this project and open it with Android studio
