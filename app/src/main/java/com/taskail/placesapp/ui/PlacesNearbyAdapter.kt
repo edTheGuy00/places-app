@@ -6,22 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
+import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.Geometry
 import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.ui.PlacesNearbyAdapter.ItemsViewHolder
 import kotlinx.android.synthetic.main.item_place.view.*
+import kotlin.math.ln
 
 /**
  *Created by ed on 4/12/18.
  */
 
-class PlacesNearbyAdapter(results: List<Result>,
-                          private val getDistanceString: (Geometry) -> String,
-                          private val openResult: (Result) -> Unit) :
+class PlacesNearbyAdapter(results: List<SearchNearbyQuery.SearchNearby>,
+                          private val getDistanceString: (LatLng) -> String,
+                          private val openResult: (SearchNearbyQuery.SearchNearby) -> Unit) :
         Adapter<ItemsViewHolder>() {
 
-    var results: List<Result> = results
+    var results: List<SearchNearbyQuery.SearchNearby> = results
 
     set(value) {
         field = value
@@ -30,17 +33,21 @@ class PlacesNearbyAdapter(results: List<Result>,
 
     class ItemsViewHolder(itemView: View) : ViewHolder(itemView) {
 
-        fun setItem(result: Result,
-                    getDistanceString: (Geometry) -> String,
-                    openResult: (Result) -> Unit) {
+        fun setItem(result: SearchNearbyQuery.SearchNearby,
+                    getDistanceString: (LatLng) -> String,
+                    openResult: (SearchNearbyQuery.SearchNearby) -> Unit) {
 
             with(itemView) {
                 with(result) {
-                    placeName.text = name
-                    distanceFrom.text = getDistanceString.invoke(geometry)
+                    placeName.text = name()
+                    val lat = geometry().location().lat()
+                    val lng = geometry().location().lng()
+                    if (lat != null && lng != null)
+                    distanceFrom.text = getDistanceString.invoke(LatLng(lat, lng))
 
-                    if (icon.isNotBlank()) {
-                        Glide.with(itemView).load(icon).into(circularImageView)
+
+                    if (icon().isNotBlank()) {
+                        Glide.with(itemView).load(icon()).into(circularImageView)
                     }
 
                     setOnClickListener {

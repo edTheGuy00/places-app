@@ -1,6 +1,7 @@
 package com.taskail.placesapp.data
 
 import com.taskail.placesapp.CreateNewUserMutation
+import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Response
 
@@ -10,11 +11,10 @@ import com.taskail.placesapp.data.models.Response
 
 interface DataSource {
 
-    fun getNearbyPlaces(type: String,
-                        location: String,
+    fun getNearbyPlaces(location: String,
                         radius: Int,
                         apiKey: String,
-                        handleResponse: (Response) -> Unit,
+                        handleResponse: (List<SearchNearbyQuery.SearchNearby>) -> Unit,
                         handleThrowable: (Throwable) -> Unit)
 
     fun getFavorites(handleFavorites: (List<FavoritePlace>) -> Unit,

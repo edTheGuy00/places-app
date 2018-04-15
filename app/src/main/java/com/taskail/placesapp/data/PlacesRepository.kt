@@ -2,6 +2,7 @@ package com.taskail.placesapp.data
 
 import android.util.Log
 import com.taskail.placesapp.CreateNewUserMutation
+import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.local.FavoritesDao
 import com.taskail.placesapp.data.local.removeFavFromDatabase
 //import com.taskail.placesapp.data.local.getFavoritesFromDatabase
@@ -10,6 +11,7 @@ import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Response
 import com.taskail.placesapp.data.network.PlacesAPI
 import com.taskail.placesapp.data.network.createNewUserMutation
+import com.taskail.placesapp.data.network.searchPlacesNearby
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,14 +36,21 @@ class PlacesRepository(private val disposable: CompositeDisposable,
      * @param handleResponse a higher-order function that will be called when the results are returned
      * @param handleThrowable a higher-order function that will handle the errors
      */
-    override fun getNearbyPlaces(type: String,
-                                 location: String,
+    override fun getNearbyPlaces(location: String,
                                  radius: Int,
                                  apiKey: String,
-                                 handleResponse: (Response) -> Unit,
+                                 handleResponse: (List<SearchNearbyQuery.SearchNearby>) -> Unit,
                                  handleThrowable: (Throwable) -> Unit) {
 
-        fetchOnDisposable(getNearbyPlaces(type, location, radius, apiKey), handleResponse, handleThrowable)
+        disposable.add(searchPlacesNearby( location, radius, apiKey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    val list = it.searchNearby()
+                    handleResponse(list)
+                }, {
+
+                }))
 
     }
 

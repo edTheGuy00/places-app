@@ -5,6 +5,7 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Geometry
 import com.taskail.placesapp.data.models.Location
@@ -39,7 +40,7 @@ interface MainContract {
 
         var presenter: Presenter
 
-        fun displayResults(results: List<Result>)
+        fun displayResults(results: List<SearchNearbyQuery.SearchNearby>)
 
         fun resultHasBeenLoaded() : Boolean
     }

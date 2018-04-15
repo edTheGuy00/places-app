@@ -99,14 +99,13 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         Log.d(TAG, "request results")
         if (locationReceived) {
             repository.getNearbyPlaces(
-                    type = "establishment",
                     location = "${currentLocation?.latitude},${currentLocation?.longitude}",
                     radius = 5000,
                     apiKey = getString(R.string.google_api_key),
                     handleResponse = {
-                        if (it.status == "OK") {
-                            nearbyView.displayResults(it.results)
-                        }
+
+                        nearbyView.displayResults(it)
+
                     },
                     handleThrowable ={
                         Log.e(TAG, "something went wrong")
