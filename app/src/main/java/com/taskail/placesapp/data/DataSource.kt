@@ -1,5 +1,6 @@
 package com.taskail.placesapp.data
 
+import com.taskail.placesapp.CreateNewUserMutation
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Response
 
@@ -22,4 +23,8 @@ interface DataSource {
     fun saveFavorite(favoritePlace: FavoritePlace, handleOnSuccess: () -> Unit)
 
     fun removeFavorite(favoritePlace: FavoritePlace)
+
+    fun createNewUser(userId: String,
+                      response: (CreateNewUserMutation.Data) -> Unit,
+                      error: (Throwable) -> Unit)
 }

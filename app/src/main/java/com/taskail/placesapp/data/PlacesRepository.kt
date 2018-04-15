@@ -1,6 +1,7 @@
 package com.taskail.placesapp.data
 
 import android.util.Log
+import com.taskail.placesapp.CreateNewUserMutation
 import com.taskail.placesapp.data.local.FavoritesDao
 import com.taskail.placesapp.data.local.removeFavFromDatabase
 //import com.taskail.placesapp.data.local.getFavoritesFromDatabase
@@ -8,6 +9,7 @@ import com.taskail.placesapp.data.local.saveFavoriteToDatabase
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Response
 import com.taskail.placesapp.data.network.PlacesAPI
+import com.taskail.placesapp.data.network.createNewUserMutation
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -72,6 +74,13 @@ class PlacesRepository(private val disposable: CompositeDisposable,
                 .subscribe({
                     Log.d(TAG, "removed successfully")
                 }))
+    }
+
+    override fun createNewUser(userId: String,
+                               response: (CreateNewUserMutation.Data) -> Unit,
+                               error: (Throwable) -> Unit) {
+
+        fetchOnDisposable(createNewUserMutation(userId), response, error)
     }
 
     /**

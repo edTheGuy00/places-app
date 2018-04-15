@@ -29,6 +29,7 @@ import com.taskail.placesapp.util.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_viewpage_list.*
+import java.util.*
 
 /**
  * the main entry point and the presenter for the application.
@@ -43,6 +44,8 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
     private lateinit var pagerAdapter: TabsPagerAdapter
     private var mapView: MainContract.MapView? = null
     private var currentLocation: Location? = null
+
+    private var userId: String? = null
 
     private lateinit var repository: DataSource
     private lateinit var disposable: CompositeDisposable
@@ -64,8 +67,30 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
         fab.setOnClickListener {
             openMapsViewFragment()
         }
+
+        val phoneId = getUserPhoneId()
+        if (phoneId == "none") {
+            Log.d(TAG, "null $phoneId")
+            createAndSaveNewUser()
+        } else {
+            Log.d(TAG, "not null $phoneId")
+            userId = phoneId
+        }
     }
 
+    private fun createAndSaveNewUser() {
+
+        val newId = UUID.randomUUID().toString()
+
+        Log.d(TAG, "creating new user $newId")
+        repository.createNewUser(newId, {
+            Log.d(TAG, it.newUser())
+            saveUserPhoneId(newId)
+            userId = newId
+        }, {
+            Log.e(TAG, it.message)
+        })
+    }
     /**
      * get all establishment within a 5km radius of the users
      * current location.

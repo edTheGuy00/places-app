@@ -14,7 +14,7 @@ import io.reactivex.Observable
  */
 
 
-fun createNewUser(phoneId: String): Observable<CreateNewUserMutation.Data> {
+fun createNewUserMutation(phoneId: String): Observable<CreateNewUserMutation.Data> {
 
     return Observable.create { emitter ->
         newUserMutation(phoneId).enqueue(object : ApolloCall.Callback<CreateNewUserMutation.Data>(){
