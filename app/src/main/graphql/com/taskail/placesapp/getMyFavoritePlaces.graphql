@@ -1,0 +1,11 @@
+query getMyPlaces($phoneId: String!){
+  me(phoneId: $phoneId){
+    places{
+      lat
+      lng
+      image
+      placeId
+      name
+    }
+  }
+}

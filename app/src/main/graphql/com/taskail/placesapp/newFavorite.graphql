@@ -1,0 +1,21 @@
+mutation addNewPlace(
+  $phoneId: String!,
+	$placeId: String!,
+  $lat: Float!,
+  $lng: Float!,
+  $name: String!,
+  $image: String
+) {
+  addPlace(
+    phoneId: $phoneId,
+    placeId: $placeId,
+    lat: $lat,
+    lng: $lng,
+    name: $name,
+    image: $image
+  )
+  {
+    placeId
+    name
+  }
+}

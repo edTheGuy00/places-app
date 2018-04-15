@@ -1,0 +1,26 @@
+query searchNearby(
+  $location: String!,
+  $radius: Int!,
+  $key: String!
+)
+{
+  searchNearby(
+  location: $location,
+  radius: $radius,
+  key: $key
+  )
+  {
+    icon
+    geometry{
+      location{
+        lat
+        lng
+      }
+    }
+    name
+    place_id
+    opening_hours{
+      open_now
+    }
+  }
+}
