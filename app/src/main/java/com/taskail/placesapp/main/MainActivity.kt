@@ -227,9 +227,16 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
      * @param placeToFavorite the generic type of place to be saved.
      */
     override fun <T> saveToFavorites(placeToFavorite: T) {
-        repository.saveFavorite(createNewFavoritePlace(placeToFavorite), {
-            Log.d(TAG, "saved successfully")
-        })
+        val place = placeToFavorite as SearchNearbyQuery.SearchNearby
+        repository.saveFavorite(userId!!,
+                place.place_id(),
+                place.geometry().location().lat()!!,
+                place.geometry().location().lng()!!,
+                place.name(),
+                place.icon(),
+                {
+                    Log.d(TAG, "saved successfully")
+                })
     }
 
     override fun deleteFavorite(favoritePlace: FavoritePlace) {

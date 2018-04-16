@@ -88,7 +88,7 @@ class PlaceBottomSheetView : BottomSheetDialogFragment(), MainContract.BottomShe
      */
     private fun favButtonHandler() {
         when(place) {
-            is Result -> {
+            is SearchNearbyQuery.SearchNearby -> {
                 presenter.saveToFavorites(place)
             }
             is FavoritePlace -> {

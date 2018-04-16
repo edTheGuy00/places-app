@@ -1,6 +1,7 @@
 package com.taskail.placesapp.data
 
 import android.util.Log
+import com.taskail.placesapp.AddNewPlaceMutation
 import com.taskail.placesapp.CreateNewUserMutation
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.local.FavoritesDao
@@ -11,6 +12,7 @@ import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Response
 import com.taskail.placesapp.data.network.PlacesAPI
 import com.taskail.placesapp.data.network.createNewUserMutation
+import com.taskail.placesapp.data.network.saveNewFavorite
 import com.taskail.placesapp.data.network.searchPlacesNearby
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -106,12 +108,23 @@ class PlacesRepository(private val disposable: CompositeDisposable,
      * @param favoritePlace favorite to be inserted
      * @param handleOnSuccess function that will be called once item is saved successfully
      */
-    override fun saveFavorite(favoritePlace: FavoritePlace, handleOnSuccess: () -> Unit) {
-        disposable.add(saveFavoriteToDatabase(favoritesDao, favoritePlace)
+//    override fun saveFavorite(favoritePlace: FavoritePlace, handleOnSuccess: () -> Unit) {
+//        disposable.add(saveFavoriteToDatabase(favoritesDao, favoritePlace)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({
+//                    handleOnSuccess()
+//                }))
+//    }
+
+    override fun saveFavorite(phoneId: String, placeId: String, lat: Double, lng: Double, name: String, image: String?, handleOnSuccess: (AddNewPlaceMutation.Data) -> Unit) {
+        disposable.add(saveNewFavorite(phoneId, placeId, lat, lng, name, image)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    handleOnSuccess()
+                    handleOnSuccess(it)
+                }, {
+                    Log.d(TAG, it.message)
                 }))
     }
 

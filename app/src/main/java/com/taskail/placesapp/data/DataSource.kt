@@ -1,5 +1,6 @@
 package com.taskail.placesapp.data
 
+import com.taskail.placesapp.AddNewPlaceMutation
 import com.taskail.placesapp.CreateNewUserMutation
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
@@ -20,7 +21,12 @@ interface DataSource {
     fun getFavorites(handleFavorites: (List<FavoritePlace>) -> Unit,
                      handleThrowable: (Throwable) -> Unit)
 
-    fun saveFavorite(favoritePlace: FavoritePlace, handleOnSuccess: () -> Unit)
+    fun saveFavorite(phoneId: String,
+                     placeId: String,
+                     lat: Double,
+                     lng: Double,
+                     name: String,
+                     image: String?, handleOnSuccess: (AddNewPlaceMutation.Data) -> Unit)
 
     fun removeFavorite(favoritePlace: FavoritePlace)
 
