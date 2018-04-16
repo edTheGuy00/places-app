@@ -8,9 +8,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.taskail.placesapp.GetMyPlacesQuery
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
-import com.taskail.placesapp.data.models.Geometry
-import com.taskail.placesapp.data.models.Location
-import com.taskail.placesapp.data.models.Result
 
 /**
  *Created by ed on 4/12/18.

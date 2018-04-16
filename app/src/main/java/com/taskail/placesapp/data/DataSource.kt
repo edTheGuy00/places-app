@@ -5,7 +5,6 @@ import com.taskail.placesapp.CreateNewUserMutation
 import com.taskail.placesapp.GetMyPlacesQuery
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
-import com.taskail.placesapp.data.models.Response
 
 /**
  *Created by ed on 4/12/18.

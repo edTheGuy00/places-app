@@ -4,7 +4,6 @@ import android.location.Location
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.taskail.placesapp.data.models.Geometry
 import io.reactivex.Single
 import kotlin.math.roundToInt
 
@@ -23,12 +22,7 @@ fun <T> getDistanceBetweenPoints(location: Location,
 
 
     return when(place){
-        is Geometry -> {
-            distance(location.latitude,
-                    place.location.lat,
-                    location.longitude,
-                    place.location.lng)
-        }
+
         is LatLng -> {
             distance(location.latitude,
                     place.latitude,

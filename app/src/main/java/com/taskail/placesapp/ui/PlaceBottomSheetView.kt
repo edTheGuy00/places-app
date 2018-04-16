@@ -9,7 +9,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.taskail.placesapp.R
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
-import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.main.MainContract
 import kotlinx.android.synthetic.main.bottom_sheet_place.*
 

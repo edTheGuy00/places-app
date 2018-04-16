@@ -1,8 +1,6 @@
 package com.taskail.placesapp.data
 
 import com.taskail.placesapp.data.local.FavoritesDao
-import com.taskail.placesapp.data.network.PlacesAPI
-import com.taskail.placesapp.data.network.getRetrofitClient
 import io.reactivex.disposables.CompositeDisposable
 
 /**
@@ -10,9 +8,5 @@ import io.reactivex.disposables.CompositeDisposable
  */
 
 fun getRepository(compositeDisposable: CompositeDisposable, favoritesDao: FavoritesDao) : PlacesRepository {
-    return PlacesRepository(compositeDisposable, createPlacesApi(), favoritesDao)
-}
-
-private fun createPlacesApi() : PlacesAPI {
-    return getRetrofitClient().create(PlacesAPI::class.java)
+    return PlacesRepository(compositeDisposable, favoritesDao)
 }

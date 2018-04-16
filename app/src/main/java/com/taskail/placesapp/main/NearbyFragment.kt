@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.taskail.placesapp.R
 import com.taskail.placesapp.SearchNearbyQuery
-import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.ui.PlacesNearbyAdapter
 import kotlinx.android.synthetic.main.fragment_recycler.*
 

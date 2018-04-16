@@ -42,10 +42,6 @@ dependencies {
     implementation "com.apollographql.apollo:apollo-runtime:${versions.apollo}"
     implementation "com.apollographql.apollo:apollo-android-support:${versions.apolloAndroid}"
 
-
-    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
     implementation "com.squareup.okhttp3:okhttp:${versions.okHttp}"
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"
     implementation "com.google.code.gson:gson:${versions.gson}"

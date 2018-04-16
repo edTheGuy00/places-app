@@ -16,16 +16,12 @@ import com.taskail.placesapp.PlacesApplication
 import com.taskail.placesapp.R
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.DataSource
-import com.taskail.placesapp.data.PlacesRepository
-import com.taskail.placesapp.data.models.Geometry
-import com.taskail.placesapp.data.models.Result
 import com.taskail.placesapp.data.getRepository
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.location.LocationServiceActivity
 import com.taskail.placesapp.ui.PlaceBottomSheetView
 import com.taskail.placesapp.ui.TabsPagerAdapter
 import com.taskail.placesapp.ui.animation.DismissibleAnimation
-import com.taskail.placesapp.ui.animation.fabToFragmentReveal
 import com.taskail.placesapp.util.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
