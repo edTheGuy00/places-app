@@ -5,6 +5,7 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.taskail.placesapp.GetMyPlacesQuery
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Geometry
@@ -49,7 +50,7 @@ interface MainContract {
 
         var presenter: Presenter
 
-        fun displayFavorites(favorites: List<FavoritePlace>)
+        fun displayFavorites(favorites: List<GetMyPlacesQuery.Place>)
     }
 
     interface Presenter {

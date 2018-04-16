@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.taskail.placesapp.GetMyPlacesQuery
 import com.taskail.placesapp.R
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.ui.FavoritePlacesAdapter
@@ -44,7 +45,7 @@ class FavoritesFragment : Fragment(), MainContract.FavoritesView {
         presenter.getFavoritePlaces()
     }
 
-    override fun displayFavorites(favorites: List<FavoritePlace>) {
+    override fun displayFavorites(favorites: List<GetMyPlacesQuery.Place>) {
         adapter.favorites = favorites
     }
 }

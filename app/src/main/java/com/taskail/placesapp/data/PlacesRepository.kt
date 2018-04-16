@@ -3,6 +3,7 @@ package com.taskail.placesapp.data
 import android.util.Log
 import com.taskail.placesapp.AddNewPlaceMutation
 import com.taskail.placesapp.CreateNewUserMutation
+import com.taskail.placesapp.GetMyPlacesQuery
 import com.taskail.placesapp.SearchNearbyQuery
 import com.taskail.placesapp.data.local.FavoritesDao
 import com.taskail.placesapp.data.local.removeFavFromDatabase
@@ -10,10 +11,7 @@ import com.taskail.placesapp.data.local.removeFavFromDatabase
 import com.taskail.placesapp.data.local.saveFavoriteToDatabase
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.data.models.Response
-import com.taskail.placesapp.data.network.PlacesAPI
-import com.taskail.placesapp.data.network.createNewUserMutation
-import com.taskail.placesapp.data.network.saveNewFavorite
-import com.taskail.placesapp.data.network.searchPlacesNearby
+import com.taskail.placesapp.data.network.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -56,26 +54,42 @@ class PlacesRepository(private val disposable: CompositeDisposable,
 
     }
 
-    /**
-     * get all the users favorite places from the local database
-     * @param handleFavorites function that will be called to handle the list of favorites
-     * @param handleThrowable function that will handle any errors,
-     *
-     * here we subscribe on a flowable to publish results when the database changes.
-     */
-    override fun getFavorites(handleFavorites: (List<FavoritePlace>) -> Unit,
+//    /**
+//     * get all the users favorite places from the local database
+//     * @param handleFavorites function that will be called to handle the list of favorites
+//     * @param handleThrowable function that will handle any errors,
+//     *
+//     * here we subscribe on a flowable to publish results when the database changes.
+//     */
+//    override fun getFavorites(handleFavorites: (List<FavoritePlace>) -> Unit,
+//                              handleThrowable: (Throwable) -> Unit) {
+//
+//        disposable.add(favoritesDao.getLocations()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe({
+//                    handleFavorites(it)
+//                }, {
+//                    handleThrowable(it)
+//                }))
+//
+//        //fetchOnDisposable(getFavoritesFromDatabase(favoritesDao), handleFavorites, handleThrowable)
+//    }
+
+    override fun getFavorites(phoneId: String,
+                              handleFavorites: (List<GetMyPlacesQuery.Place>) -> Unit,
                               handleThrowable: (Throwable) -> Unit) {
 
-        disposable.add(favoritesDao.getLocations()
-                .observeOn(AndroidSchedulers.mainThread())
+        disposable.add(getMyFavoritePlaces(phoneId)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    handleFavorites(it)
+                    val list = it.me().places()?.toList()
+                    if (list != null)
+                    handleFavorites(list)
                 }, {
                     handleThrowable(it)
                 }))
-
-        //fetchOnDisposable(getFavoritesFromDatabase(favoritesDao), handleFavorites, handleThrowable)
     }
 
     override fun removeFavorite(favoritePlace: FavoritePlace) {

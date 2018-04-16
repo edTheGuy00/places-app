@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
+import com.taskail.placesapp.GetMyPlacesQuery
 import com.taskail.placesapp.R
 import com.taskail.placesapp.data.models.FavoritePlace
 import com.taskail.placesapp.ui.FavoritePlacesAdapter.ItemsViewHolder
@@ -16,12 +17,12 @@ import kotlinx.android.synthetic.main.item_place.view.*
  *Created by ed on 4/12/18.
  */
 
-class FavoritePlacesAdapter(favorites: List<FavoritePlace>,
+class FavoritePlacesAdapter(favorites: List<GetMyPlacesQuery.Place>,
                             private val getDistanceString: (LatLng) -> String,
-                            private val openResult: (FavoritePlace) -> Unit) :
+                            private val openResult: (GetMyPlacesQuery.Place) -> Unit) :
         Adapter<ItemsViewHolder>() {
 
-    var favorites: List<FavoritePlace> = favorites
+    var favorites: List<GetMyPlacesQuery.Place> = favorites
 
     set(value) {
         field = value
@@ -30,19 +31,19 @@ class FavoritePlacesAdapter(favorites: List<FavoritePlace>,
 
     class ItemsViewHolder(itemView: View) : ViewHolder(itemView) {
 
-        fun setItem(favorite: FavoritePlace,
+        fun setItem(favorite: GetMyPlacesQuery.Place,
                     getDistanceString: (LatLng) -> String,
-                    openResult: (FavoritePlace) -> Unit) {
+                    openResult: (GetMyPlacesQuery.Place) -> Unit) {
 
             with(itemView) {
                 with(favorite) {
-                    placeName.text = name
+                    placeName.text = name()
 
                     // users current location is  not available right away.
-                    //distanceFrom.text = getDistanceString(LatLng(lat, lng))
+                    distanceFrom.text = getDistanceString(LatLng(lat(), lng()))
 
-                    if (icon.isNotBlank()) {
-                        Glide.with(itemView).load(icon).into(circularImageView)
+                    if (image() != null) {
+                        Glide.with(itemView).load(image()).into(circularImageView)
                     }
 
                     setOnClickListener {

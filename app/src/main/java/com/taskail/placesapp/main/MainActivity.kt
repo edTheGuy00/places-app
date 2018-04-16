@@ -120,7 +120,8 @@ class MainActivity : LocationServiceActivity(), MainContract.Presenter {
      * get all of the users favorite places from the local database
      */
     override fun getFavoritePlaces() {
-        repository.getFavorites({
+        repository.getFavorites(userId!!,
+                {
             favoritesView.displayFavorites(it)
         }, {
             Log.d(TAG, "Something went wrong")
